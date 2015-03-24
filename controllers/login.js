@@ -3,6 +3,7 @@
  */
 var User = require('../model/accounts');
 var jwt = require('jsonwebtoken');
+var secret = require('../secret');
 
 function login(res, req) {
     var username = req.body.username || '',

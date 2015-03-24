@@ -4,12 +4,13 @@
 
 var express = require('express'),
     app = express(),
-    jwt = require('express-jwt');
+    jwt = require('express-jwt'),
+    secret = require('./secret');
 
 app.use(express.static('public'));
 
 //use token based auth for all routes
-app.all('*', jwt({secret: secret.secretToken});
+app.all('*', jwt({secret: secret.secretToken}));
 
 app.get('/', function(req, res){
     res.sendFile('index.html');
