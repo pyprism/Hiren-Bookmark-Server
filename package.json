@@ -1,0 +1,25 @@
+{
+  "name": "hiren",
+  "version": "1.0.0",
+  "description": "Simple Bookmark Service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pyprism/Hiren-Bookmark.git"
+  },
+  "author": "pyprism",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pyprism/Hiren-Bookmark/issues"
+  },
+  "homepage": "https://github.com/pyprism/Hiren-Bookmark#readme",
+  "dependencies": {
+    "body-parser": "^1.13.2",
+    "consolidate": "^0.13.1",
+    "express": "^4.13.1",
+    "mongoose": "^4.1.0"
+  }
+}
