@@ -1,0 +1,17 @@
+{
+  "name": "Hiren-Bookmark",
+  "version": "0.0.0",
+  "homepage": "https://github.com/pyprism/Hiren-Bookmark",
+  "authors": [
+    "Ashutosh Das <git.pyprism@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/bower",
+    "test",
+    "tests"
+  ]
+}
