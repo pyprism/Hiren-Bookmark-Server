@@ -5,7 +5,17 @@
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
+    Account = require('./models/users'),
+    cookieParser = require('cookie-parser'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy,
+    session = require('express-session'),
+    RedisStore = require('connect-redis')(session),
+    hbs = require('hbs'),
     cons = require('consolidate');
+
+//route import and model injection
+auth = require('./routes/auth')(Account);
 
 var app = express();
 
@@ -13,10 +23,61 @@ app.enable('trust proxy');
 app.use(express.static('public'));
 app.set('view engine', 'hbs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(session({
+    store: new RedisStore(),
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+//handlebar partials support
+hbs.registerPartials(__dirname + '/views/');
+
+// passport config
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
 
 app.get('/', function(req, res) {
-    res.render('index', { 'data': 'hi'}); // load the single view file
+    res.render('index', { 'data': 'hi'});
 });
+
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+// error handlers
+
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
+    });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
+});
+
+
+
 
 var port = process.env.PORT || 4000,
     db = mongoose.connect( process.env.DB || 'mongodb://localhost/hiren_bookmark');
