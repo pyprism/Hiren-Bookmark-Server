@@ -12,6 +12,8 @@ var express = require('express'),
     session = require('express-session'),
     RedisStore = require('connect-redis')(session),
     hbs = require('hbs'),
+    helmet = require('helmet'),
+    exphbs  = require('express-handlebars'),
     cons = require('consolidate');
 
 //route import and model injection
@@ -20,8 +22,11 @@ auth = require('./routes/auth')(Account);
 var app = express();
 
 app.enable('trust proxy');
+app.use(helmet());
 app.use(express.static('public'));
-app.set('view engine', 'hbs');
+//app.set('view engine', 'hbs');
+app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.set('view engine', 'handlebars');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
@@ -34,15 +39,17 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //handlebar partials support
-hbs.registerPartials(__dirname + '/views/');
+//hbs.registerPartials(__dirname + '/views/');
 
 // passport config
 passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+app.use('/api/income', auth);
+
 app.get('/', function(req, res) {
-    res.render('index', { 'data': 'hi'});
+    res.render('home');
 });
 
 // catch 404 and forward to error handler
