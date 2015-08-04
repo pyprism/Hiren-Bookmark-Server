@@ -23,6 +23,7 @@ var routes = function(Account) {
 
             });
         });
+    return router;
 };
 
 module.exports = routes;
