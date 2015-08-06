@@ -14,6 +14,7 @@ var express = require('express'),
     hbs = require('hbs'),
     helmet = require('helmet'),
     exphbs  = require('express-handlebars'),
+    morgan = require('morgan'),
     cons = require('consolidate');
 
 //route import and model injection
@@ -23,6 +24,7 @@ var app = express();
 
 app.enable('trust proxy');
 app.use(helmet());
+app.use(cors());
 app.use(express.static('public'));
 //app.set('view engine', 'hbs');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
@@ -38,6 +40,13 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+//logger
+if (app.get('env') == 'production') {
+    app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../morgan.log' }));
+} else {
+    app.use(morgan('dev'));
+}
+
 //handlebar partials support
 //hbs.registerPartials(__dirname + '/views/');
 
@@ -49,7 +58,7 @@ passport.deserializeUser(Account.deserializeUser());
 app.use('/api/income', auth);
 
 app.get('/', function(req, res) {
-    res.render('home');
+    res.render('index');
 });
 
 // catch 404 and forward to error handler
