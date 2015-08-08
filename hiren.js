@@ -15,6 +15,7 @@ var express = require('express'),
     helmet = require('helmet'),
     exphbs  = require('express-handlebars'),
     morgan = require('morgan'),
+    cors = require('cors'),
     cons = require('consolidate');
 
 //route import and model injection
@@ -25,7 +26,7 @@ var app = express();
 app.enable('trust proxy');
 app.use(helmet());
 app.use(cors());
-app.use(express.static('public'));
+app.use(express.static(__dirname + '/public'));
 //app.set('view engine', 'hbs');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
@@ -42,7 +43,7 @@ app.use(passport.session());
 
 //logger
 if (app.get('env') == 'production') {
-    app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + '/../morgan.log' }));
+    app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + 'morgan.log' }));
 } else {
     app.use(morgan('dev'));
 }
@@ -55,11 +56,13 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
-app.use('/api/income', auth);
+app.use('/auth', auth);
 
 app.get('/', function(req, res) {
     res.render('index');
 });
+
+//app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
