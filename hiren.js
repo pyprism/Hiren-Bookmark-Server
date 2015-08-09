@@ -16,6 +16,7 @@ var express = require('express'),
     exphbs  = require('express-handlebars'),
     morgan = require('morgan'),
     cors = require('cors'),
+    compression = require('compression'),
     cons = require('consolidate');
 
 //route import and model injection
@@ -26,6 +27,7 @@ var app = express();
 app.enable('trust proxy');
 app.use(helmet());
 app.use(cors());
+app.use(compression())
 app.use(express.static(__dirname + '/public'));
 //app.set('view engine', 'hbs');
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
