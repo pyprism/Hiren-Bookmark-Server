@@ -27,11 +27,12 @@ var app = express();
 app.enable('trust proxy');
 app.use(helmet());
 app.use(cors());
-app.use(compression())
+app.use(compression());
 app.use(express.static(__dirname + '/public'));
 //app.set('view engine', 'hbs');
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-app.set('view engine', 'handlebars');
+//app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+//app.set('view engine', 'handlebars');
+app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(session({
@@ -61,7 +62,7 @@ passport.deserializeUser(Account.deserializeUser());
 app.use('/auth', auth);
 
 app.get('/', function(req, res) {
-    res.render('index');
+    res.render('pages/index');
 });
 
 //app.use('/auth', auth);
