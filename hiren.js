@@ -16,8 +16,7 @@ var express = require('express'),
     exphbs  = require('express-handlebars'),
     morgan = require('morgan'),
     cors = require('cors'),
-    compression = require('compression'),
-    cons = require('consolidate');
+    compression = require('compression');
 
 //route import and model injection
 auth = require('./routes/auth')(Account);
