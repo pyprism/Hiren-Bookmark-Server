@@ -9,12 +9,12 @@ var routes = function(Account) {
 
     router.route('/register')
         .get(function(req, res) {
-            res.render('register');
+            res.render('pages/register');
         })
         .post(function(req, res) {
             Account.register(new Account({username: req.body.username}), req.body.password, function(err, account) {
                 if (err) {
-                    return res.render('register', { account : account });
+                    return res.render('pages/register', { account : account });
                 }
 
                 passport.authenticate('local')(req, res, function () {
