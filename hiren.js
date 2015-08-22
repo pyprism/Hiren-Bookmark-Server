@@ -58,10 +58,26 @@ passport.use(new LocalStrategy(Account.authenticate()));
 passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
+//check authentication
+function ensureAuthenticated(req, res, next) {
+    if (req.isAuthenticated()) {
+        return next();
+    }
+    res.redirect('/auth/login');
+}
+
 app.use('/auth', auth);
 
 app.get('/', function(req, res) {
-    res.render('pages/index');
+    if (req.isAuthenticated()) {
+        var auth = true;
+        console.error(req.isAuthenticated());
+    }
+    res.render('pages/index', {auth: auth});
+});
+
+app.get('/dashboard', ensureAuthenticated, function(req, res) {
+   res.send("yo");
 });
 
 //app.use('/auth', auth);
