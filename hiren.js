@@ -11,9 +11,7 @@ var express = require('express'),
     LocalStrategy = require('passport-local').Strategy,
     session = require('express-session'),
     RedisStore = require('connect-redis')(session),
-    hbs = require('hbs'),
     helmet = require('helmet'),
-    exphbs  = require('express-handlebars'),
     morgan = require('morgan'),
     cors = require('cors'),
     compression = require('compression');
@@ -28,9 +26,6 @@ app.use(helmet());
 app.use(cors());
 app.use(compression());
 app.use(express.static(__dirname + '/public'));
-//app.set('view engine', 'hbs');
-//app.engine('handlebars', exphbs({defaultLayout: 'main'}));
-//app.set('view engine', 'handlebars');
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
@@ -50,8 +45,6 @@ if (app.get('env') == 'production') {
     app.use(morgan('dev'));
 }
 
-//handlebar partials support
-//hbs.registerPartials(__dirname + '/views/');
 
 // passport config
 passport.use(new LocalStrategy(Account.authenticate()));
