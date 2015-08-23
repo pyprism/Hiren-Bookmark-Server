@@ -13,5 +13,8 @@
     "public/bower",
     "test",
     "tests"
-  ]
+  ],
+  "dependencies": {
+    "bootstrap-table": "~1.8.1"
+  }
 }
