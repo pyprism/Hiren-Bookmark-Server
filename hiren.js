@@ -17,7 +17,8 @@ var express = require('express'),
     compression = require('compression');
 
 //route import and model injection
-auth = require('./routes/auth')(Account);
+var auth = require('./routes/auth')(Account);
+var dashboard = require('./routes/dashboard')();
 
 var app = express();
 
@@ -60,20 +61,16 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.use('/auth', auth);
+app.use('/dashboard', dashboard);
 
 app.get('/', function(req, res) {
-    if (req.isAuthenticated()) {
-        var auth = true;
-        console.error(req.isAuthenticated());
-    }
-    res.render('pages/index', {auth: auth});
+   // if (req.isAuthenticated()) {
+   //     var auth = true;
+   //     console.error(req.isAuthenticated());
+   // }
+    res.render('pages/index', {auth: req.isAuthenticated() ? true: false});
 });
 
-app.get('/dashboard', ensureAuthenticated, function(req, res) {
-   res.send("yo");
-});
-
-//app.use('/auth', auth);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
