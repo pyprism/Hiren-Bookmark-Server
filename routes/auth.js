@@ -10,7 +10,7 @@ var routes = function(Account) {
     // routes for registration
     router.route('/register')
         .get(function(req, res) {
-            res.render('pages/register', { error: null});
+            res.render('pages/register', { auth: null, error: null});
         })
         .post(function(req, res) {
             Account.count({}, function( err, count){
@@ -35,7 +35,7 @@ var routes = function(Account) {
     //routes for login
     router.route('/login')
         .get(function(req, res) {
-            res.render('pages/login', { error: null});
+            res.render('pages/login', { auth: null, error: null});
         })
         .post( passport.authenticate('local'), function(req, res) {
             res.redirect('/dashboard');
