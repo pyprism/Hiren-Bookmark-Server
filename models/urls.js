@@ -9,4 +9,10 @@ var url = new Schema({
     href: String
 });
 
-module.exports = mongoose.model('URL', url);
+var tag = new Schema({
+    name: String,
+    ref: [url]
+});
+
+exports.URL = mongoose.model('URL', url);
+exports.Tag = mongoose.model('Tag', tag);
