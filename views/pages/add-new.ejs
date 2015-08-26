@@ -41,7 +41,7 @@
 <!-- /#page-content-wrapper -->
 
 <%- include('.././partials/footer.ejs') %>
-<script src="/bower/socket.io-client/socket.io.js"></script>
+<script src="/js/title.js"></script>
 <!-- Menu Toggle Script -->
 <script>
     $(document).ready(function() {
@@ -50,11 +50,11 @@
             $("#wrapper").toggleClass("toggled");
         });
 
-        var socket = io.connect();
+        /*var socket = io.connect();
         $(".url").change(function(){
             socket.emit('url', {data: $('.url').val()} )
             console.log($('.url').val());
-        });
+        });*/
     });
 
 </script>

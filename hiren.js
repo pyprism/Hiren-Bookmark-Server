@@ -17,8 +17,18 @@ var express = require('express'),
     compression = require('compression');
 
 var app = express();
-var server = require('http').Server(app);
-var io = require('socket.io')(server);
+//var server = require('http').Server(app);
+var server = app.listen(4000);
+var io = require('socket.io').listen(server);
+
+io.on('connection', function(socket) {
+    socket.emit('title', {hello: 'nisha'});
+    socket.on('url', function(data) {
+        console.log(data.data);
+        io.to('nisha').emit('data', data);
+    });
+
+});
 
 //route import , model and other object injection
 var auth = require('./routes/auth')(Account);
@@ -33,6 +43,7 @@ app.use(compression());
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(session({
     store: new RedisStore(),
@@ -122,6 +133,7 @@ var port = process.env.PORT || 4000,
 //    }
 //);
 
+/*
 app.listen(port, function(){
     console.log('App is running on port: ' + port);
-});
+});*/
