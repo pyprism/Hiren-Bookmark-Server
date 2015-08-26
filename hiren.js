@@ -17,23 +17,10 @@ var express = require('express'),
     compression = require('compression');
 
 var app = express();
-//var server = require('http').Server(app);
-var server = app.listen(4000);
-var io = require('socket.io').listen(server);
-
-io.on('connection', function(socket) {
-    socket.emit('title', {hello: 'nisha'});
-    socket.on('url', function(data) {
-        console.log(data.data);
-        io.to('nisha').emit('data', data);
-    });
-
-});
 
 //route import , model and other object injection
 var auth = require('./routes/auth')(Account);
-var dashboard = require('./routes/dashboard')(io);
-
+var dashboard = require('./routes/dashboard')();
 
 
 app.enable('trust proxy');
@@ -124,16 +111,8 @@ app.use(function(err, req, res, next) {
 var port = process.env.PORT || 4000,
     db = mongoose.connect( process.env.DB || 'mongodb://localhost/hiren_bookmark');
 
-//app.use(function (req, res, next) {
-//        res.setHeader('Access-Control-Allow-Origin', "http://"+req.headers.host+ ":" + port);
-//
-//        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-//        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-//        next();
-//    }
-//);
 
-/*
+
 app.listen(port, function(){
     console.log('App is running on port: ' + port);
-});*/
+});
