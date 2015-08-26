@@ -16,6 +16,9 @@ var routes = function(io){
 
     router.route('/add')
         .get(function(req, res) {
+            io.in('nisha').on('data', function(data) {
+                console.log("route"+ data);
+            });
             res.render('pages/add-new', {auth: null});
         })
         .post(function(req, res) {
@@ -34,6 +37,14 @@ var routes = function(io){
                 }
             });
 
+        });
+
+    router.route('/ajax')
+        .post(function(req, res) {
+            var obj = {};
+            console.log('body: ' + JSON.stringify(req.body));
+            console.log(req.body.hiren);
+            res.send(req.body);
         });
 
     return router;
