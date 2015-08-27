@@ -6,6 +6,7 @@ var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
     Account = require('./models/users'),
+    urls = require('./models/urls'),
     cookieParser = require('cookie-parser'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
@@ -21,6 +22,7 @@ var app = express();
 //route import , model and other object injection
 var auth = require('./routes/auth')(Account);
 var dashboard = require('./routes/dashboard')();
+var ajax = require('./routes/ajax')(urls);
 
 
 app.enable('trust proxy');
@@ -63,7 +65,8 @@ function ensureAuthenticated(req, res, next) {
 }
 
 app.use('/auth', auth);
-app.use('/dashboard', dashboard);
+app.use('/dashboard', ensureAuthenticated, dashboard);
+app.use('/ajax', ensureAuthenticated, ajax);
 
 app.get('/', function(req, res) {
    // if (req.isAuthenticated()) {
