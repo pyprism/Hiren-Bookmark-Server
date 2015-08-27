@@ -3,7 +3,6 @@
  */
 $(document).ready(function() {
     $(".url").change(function(){
-        console.log($('.url').val());
         var data = {};
         data.hiren = $('.url').val();
         //var data = {data: $('.url').val()};
@@ -11,11 +10,34 @@ $(document).ready(function() {
             type: 'POST',
             data: JSON.stringify(data),
             contentType: 'application/json',
-            url: '/dashboard/ajax',
+            url: '/ajax/title',
             success: function(data) {
-                console.log('success');
-                console.log(JSON.stringify(data));
+                $('.title').val(data);
             }
         });
     });
+
+    //twitter bloodhound
+    var tags = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        remote: {
+            url: '/ajax/tags',
+            ajax: {
+                type: 'GET',
+                url: '/ajax/tags',
+                contentType: 'application/json',
+                success: function(tags) {
+                    return tags;
+                }
+            }
+        }
+    });
+    // passing in `null` for the `options` arguments will result in the default
+    // options being used
+    $('#prefetch .typeahead').typeahead(null, {
+        name: 'tag',
+        source: tags
+    });
+
 });
