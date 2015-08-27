@@ -1,9 +1,8 @@
 /**
  * Created by prism on 8/23/15.
  */
-var express = require('express'),
-    request = require('request'),
-    cheerio = require('cheerio');
+var express = require('express');
+
 
 var routes = function(){
     var router = express.Router();
@@ -28,14 +27,6 @@ var routes = function(){
                 }
             });
 
-        });
-
-    router.route('/ajax')
-        .post(function(req, res) {
-            var obj = {};
-            console.log('body: ' + JSON.stringify(req.body));
-            console.log(req.body.hiren);
-            res.send(req.body);
         });
 
     return router;
