@@ -29,7 +29,9 @@
         <h2 class="form-signin-heading">Enter URL</h2>
         <input type="url" class="form-control url" name="url" placeholder="Enter Your Fucking URL :D" required="" autofocus="" />
         <br/>
-        <input type="text" class="form-control" name="tag" placeholder="Tag" required=""/>
+        <div id="prefetch">
+        <input type="text" class="form-control typeahead" name="tag" placeholder="Tag" required=""/>
+        </div>
         <br/>
         <input type="text" class="form-control title" name="title" placeholder="Title" required=""/>
         <br/>
@@ -42,6 +44,7 @@
 
 <%- include('.././partials/footer.ejs') %>
 <script src="/js/title.js"></script>
+<script src="/bower/typeahead.js/dist/bloodhound.min.js"></script>
 <!-- Menu Toggle Script -->
 <script>
     $(document).ready(function() {
@@ -50,11 +53,6 @@
             $("#wrapper").toggleClass("toggled");
         });
 
-        /*var socket = io.connect();
-        $(".url").change(function(){
-            socket.emit('url', {data: $('.url').val()} )
-            console.log($('.url').val());
-        });*/
     });
 
 </script>
