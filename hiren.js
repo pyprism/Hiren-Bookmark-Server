@@ -7,6 +7,7 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     Account = require('./models/users'),
     urls = require('./models/urls'),
+    tags = require('./models/tags'),
     cookieParser = require('cookie-parser'),
     passport = require('passport'),
     LocalStrategy = require('passport-local').Strategy,
@@ -19,10 +20,10 @@ var express = require('express'),
 
 var app = express();
 
-//route import , model and other object injection
+//route import , model  injection
 var auth = require('./routes/auth')(Account);
-var dashboard = require('./routes/dashboard')();
-var ajax = require('./routes/ajax')(urls);
+var dashboard = require('./routes/dashboard')(urls, tags);
+var ajax = require('./routes/ajax')(tags);
 
 
 app.enable('trust proxy');
