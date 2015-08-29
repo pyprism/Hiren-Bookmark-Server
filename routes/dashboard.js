@@ -1,10 +1,11 @@
 /**
  * Created by prism on 8/23/15.
  */
-var express = require('express');
+var express = require('express'),
+    moment = require('moment-timezone');
 
 
-var routes = function(){
+var routes = function(URL, Tag){
     var router = express.Router();
 
     //test
@@ -12,21 +13,29 @@ var routes = function(){
         .get(function(req, res) {
             res.render('pages/add-new', {auth: null});
         });
-
+    /*
+      Add new url and tag
+    */
     router.route('/add')
         .get(function(req, res) {
+            console.log(moment().tz('Asia/Dhaka'));
+            console.log(moment().tz('Asia/Dhaka').format());
             res.render('pages/add-new', {auth: null});
         })
         .post(function(req, res) {
             console.log(req.body);
-            request(req.body.url, function(error, response, html) {
-                if(!error && response.statusCode == 200){
-                    var $ = cheerio.load(html);
-                    console.log($('title').text());
-                    res.send('nisha');
-                }
+            var url = new URL({title: req.body.title, href: req.body.url});
+            url.save();
+            console.log(url);
+            Tag.findOne({title: req.body.tag}, function(err, hiren) {
+               if(hiren)
+               console.log(hiren);
+                else {
+                   var tag = new Tag({title: req.body.tag, ref: url._id});
+                   tag.save();
+               }
             });
-
+            res.send(":D");
         });
 
     return router;
