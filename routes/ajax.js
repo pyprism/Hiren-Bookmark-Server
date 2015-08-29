@@ -5,7 +5,7 @@ var express = require('express'),
     request = require('request'),
     cheerio = require('cheerio');
 
-var routes = function(urls) {
+var routes = function(Tag) {
     var router = express.Router();
 
     //route for fetching title using AJAX
@@ -25,7 +25,7 @@ var routes = function(urls) {
     //get all tags name
     router.route('/tags')
         .get(function(req, res) {
-            urls.Tag.find({}, 'name', function(err, data) {
+            Tag.find({}, 'name', function(err, data) {
                 if(!err)
                     res.send(data);
             });
