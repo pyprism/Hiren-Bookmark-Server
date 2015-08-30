@@ -1,18 +1,16 @@
 /**
  * Created by prism on 8/29/15.
  */
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+    moment = require('moment-timezone');
 var Schema = mongoose.Schema;
 
 var tag = new Schema({
     name: String,
-    ref: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'URL'
-    },
+    ref: Array,
     createdOn : {
         type: Date,
-        default: Date.now
+        default: moment().tz('Asia/Dhaka')
     }
 });
 
