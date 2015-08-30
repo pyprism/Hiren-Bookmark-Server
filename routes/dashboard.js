@@ -23,15 +23,14 @@ var routes = function(URL, Tag){
             res.render('pages/add-new', {auth: null});
         })
         .post(function(req, res) {
-            console.log(req.body);
             var url = new URL({title: req.body.title, href: req.body.url});
             url.save();
-            console.log(url);
-            Tag.findOne({title: req.body.tag}, function(err, hiren) {
-               if(hiren)
-               console.log(hiren);
+            Tag.findOne({name: req.body.tag}, function(err, hiren) {
+               if(hiren) {
+                   Tag.findByIdAndUpdate(hiren._id, {$push: {ref: url._id}}, {safe: true, upsert: true});
+               }
                 else {
-                   var tag = new Tag({title: req.body.tag, ref: url._id});
+                   var tag = new Tag({name: req.body.tag, ref: url._id});
                    tag.save();
                }
             });
