@@ -1,7 +1,7 @@
 /**
  * Created by prism on 8/1/15.
  */
-
+require('newrelic');
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
@@ -16,7 +16,8 @@ var express = require('express'),
     helmet = require('helmet'),
     morgan = require('morgan'),
     cors = require('cors'),
-    compression = require('compression');
+    compression = require('compression'),
+    moment = require('moment-timezone');
 
 var app = express();
 
@@ -27,9 +28,10 @@ var ajax = require('./routes/ajax')(tags);
 
 
 app.enable('trust proxy');
+app.use(compression());
+app.set('view cache', true);
 app.use(helmet());
 app.use(cors());
-app.use(compression());
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
@@ -118,5 +120,5 @@ var port = process.env.PORT || 4000,
 
 
 app.listen(port, function(){
-    console.log('App is running on port: ' + port);
+    console.log(moment().tz('Asia/Dhaka').format('DD-MM-YYYY HH:MM:SS') + ': ' + 'App is running on port: ' + port);
 });
