@@ -11,6 +11,14 @@ var routes = function(Tag, URL) {
      */
     router.route('/')
         .get(function(req, res){
+           var pageNo = undefined == req.params.pageNo ? 1 : req.params.pageNo;
+            console.log(req.params.pageNo);
+            //console.log(req.params.pageNo);
+            URL.paginate({}, {
+                page: pageNo, limit: 10
+            }, function(err, result) {
+                console.log(result);
+            });
             res.render('pages/all');
         });
 
