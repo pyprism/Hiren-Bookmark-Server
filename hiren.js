@@ -1,7 +1,7 @@
 /**
  * Created by prism on 8/1/15.
  */
-require('newrelic');
+//require('newrelic');
 var express = require('express'),
     mongoose = require('mongoose'),
     bodyParser = require('body-parser'),
@@ -25,11 +25,12 @@ var app = express();
 var auth = require('./routes/auth')(Account);
 var dashboard = require('./routes/dashboard')(urls, tags);
 var ajax = require('./routes/ajax')(tags);
+var tag = require('./routes/tags')(tags);
+var all = require('./routes/all')(tags, urls);
 
 
 app.enable('trust proxy');
 app.use(compression());
-app.set('view cache', true);
 app.use(helmet());
 app.use(cors());
 app.use(express.static(__dirname + '/public'));
@@ -48,6 +49,7 @@ app.use(passport.session());
 
 //logger
 if (app.get('env') == 'production') {
+    app.set('view cache', true);
     app.use(morgan('common', { skip: function(req, res) { return res.statusCode < 400 }, stream: __dirname + 'morgan.log' }));
 } else {
     app.use(morgan('dev'));
@@ -70,6 +72,9 @@ function ensureAuthenticated(req, res, next) {
 app.use('/auth', auth);
 app.use('/dashboard', ensureAuthenticated, dashboard);
 app.use('/ajax', ensureAuthenticated, ajax);
+app.use('/dashboard/tags', ensureAuthenticated, tag);
+app.use('/dashboard/list/', ensureAuthenticated, all);
+app.use('/dashboard/list/:pageNo', ensureAuthenticated, all);
 
 app.get('/', function(req, res) {
    // if (req.isAuthenticated()) {
@@ -114,8 +119,11 @@ app.use(function(err, req, res, next) {
 
 
 
-var port = process.env.PORT || 4000,
-    db = mongoose.connect( process.env.DB || 'mongodb://localhost/hiren_bookmark');
+var port = process.env.PORT || 4000;
+mongoose.connect( process.env.DB || 'mongodb://localhost/hiren_bookmark');
+mongoose.connection.on('error', function(err) {
+    console.error('MongoDB error: %s', err);
+});
 
 
 
