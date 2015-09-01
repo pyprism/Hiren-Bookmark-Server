@@ -2,7 +2,8 @@
  * Created by prism on 8/24/15.
  */
 var mongoose = require('mongoose'),
-    moment = require('moment-timezone');
+    moment = require('moment-timezone'),
+    mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema;
 
 var url = new Schema({
@@ -14,4 +15,5 @@ var url = new Schema({
     }
 });
 
+url.plugin(mongoosePaginate);
 module.exports = mongoose.model('URL', url);
