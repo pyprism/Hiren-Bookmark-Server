@@ -1,6 +1,6 @@
 languages:
   JavaScript: true
 exclude_paths:
-  -'public/css/'
-  -'public/font-awesome'
-  -'js/'
+-'public/css/*'
+-'public/font-awesome/*'
+-'js/*'
