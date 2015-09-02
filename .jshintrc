@@ -1,0 +1,15 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "latedef": true,
+  "maxdepth": 4,
+  "maxparams": 4,
+  "strict": true,
+  "undef": true,
+  "unused": true,
+  "couch": true,
+  "devel": true,
+  "mocha": true,
+  "jasmine": true,
+  "node": true
+}
