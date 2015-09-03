@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/pyprism/Hiren-Bookmark#readme",
   "dependencies": {
+    "async": "^1.4.2",
     "body-parser": "^1.13.2",
     "cheerio": "^0.19.0",
     "compression": "^1.5.2",
@@ -28,7 +29,7 @@
     "express": "^4.13.1",
     "express-handlebars": "^2.0.1",
     "express-session": "^1.11.3",
-    "handlebars": "^3.0.3",
+    "handlebars": "^4.0.1",
     "hbs": "^3.1.0",
     "helmet": "^0.10.0",
     "moment-timezone": "^0.4.0",
