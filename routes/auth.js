@@ -15,11 +15,11 @@ var routes = function(Account) {
         .post(function(req, res) {
             Account.count({}, function( err, count){
                 if (count == 1){   //only single account permitted to register
-                    return res.render('pages/register', {error: "There is already an account existed!"});
+                    return res.render('pages/register', {error: "There is already an account existed!", auth: null});
                 } else {
                     Account.register(new Account({username: req.body.email}), req.body.password, function(err, account) {
                         if (err) {
-                            return res.render('pages/register', { error : err });
+                            return res.render('pages/register', { error : err, auth: null });
                         }
 
                         passport.authenticate('local')(req, res, function () {
