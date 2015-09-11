@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by prism on 8/1/15.
  */
@@ -17,7 +18,8 @@ var express = require('express'),
     morgan = require('morgan'),
     cors = require('cors'),
     compression = require('compression'),
-    moment = require('moment-timezone');
+    moment = require('moment-timezone'),
+    favicon = require('serve-favicon');
 
 var app = express();
 
@@ -33,6 +35,7 @@ app.enable('trust proxy');
 app.use(compression());
 app.use(helmet());
 app.use(cors());
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
