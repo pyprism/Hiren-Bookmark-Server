@@ -18,8 +18,6 @@ var routes = function(URL, Tag){
     */
     router.route('/add')
         .get(function(req, res) {
-            console.log(moment().tz('Asia/Dhaka'));
-            console.log(moment().tz('Asia/Dhaka').format());
             res.render('pages/add-new', {auth: null});
         })
         .post(function(req, res) {
@@ -34,7 +32,7 @@ var routes = function(URL, Tag){
                    tag.save();
                }
             });
-            res.send(":D");
+            res.redirect('/dashboard/add');
         });
 
     return router;
