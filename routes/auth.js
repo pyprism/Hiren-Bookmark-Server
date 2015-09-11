@@ -21,10 +21,8 @@ var routes = function(Account) {
                         if (err) {
                             return res.render('pages/register', { error : err, auth: null });
                         }
+                        res.redirect('/auth/login', { error : err, auth: null });
 
-                        passport.authenticate('local')(req, res, function () {
-                            res.redirect('/dashboard');
-                        });
 
                     });
                 }
