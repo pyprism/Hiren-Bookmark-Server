@@ -25,10 +25,15 @@ var routes = function(URL, Tag){
             url.save();
             Tag.findOne({name: req.body.tag}, function(err, hiren) {
                if(hiren) {
-                   Tag.findByIdAndUpdate(hiren._id, {$push: {ref: url._id}}, {safe: true, upsert: true});
+                   console.log(url._id);
+                  Tag.findByIdAndUpdate({_id: hiren._id}, {$push: {urlId: url._id}}, {safe: true, upsert: true, new: true}, function(err, data) {
+                      if(err) {
+                          return res.render('error', {message: err.message,  error: err});
+                      }
+                  });
                }
                 else {
-                   var tag = new Tag({name: req.body.tag, ref: url._id});
+                   var tag = new Tag({name: req.body.tag, urlId: url._id});
                    tag.save();
                }
             });
