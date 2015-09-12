@@ -7,7 +7,7 @@ var Schema = mongoose.Schema;
 
 var tag = new Schema({
     name: String,
-    ref: Array,
+    urlId: Array,
     createdOn : {
         type: Date,
         default: moment().tz('Asia/Dhaka')
