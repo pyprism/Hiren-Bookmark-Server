@@ -22,21 +22,23 @@ var routes = function(Tag, URL) {
                 var data = [];
                 data.row = [];
                 data.total = result.length;
-                result.forEach(function (element) {
+                /*result.forEach(function (element) {
                     async.waterfall([
                        function (callback) {
-                           console.log(element._id);
-                            Tag.findOne({ref: element._id}, function (err, result) {
-                                //console.log(result)
-                                data.row.push({'title': element.title, 'tag': result.name});
+                            Tag.findOne({urlId: { $in : [element._id]} }, function (err, tagResult) {
+                                //console.log(err);
+                               // console.log(result);
+                               data.row.push({'title': element.title, 'tag': tagResult.name});
+                               callback(null, data);
+                               //callback(null, tagResult);
                             });
-                            callback(null, data);
+                            //callback(null, data);
                     }
-                    ], function (err, result) {
+                    ], function (err, hiren) {
                         if(!err)
-                            console.log(result);
+                           console.log(hiren);
                     });
-                });
+                });*/
 
                 /*result.forEach(function(element, index, array) {
                     Tag.findOne({ref: element._id}, function(err, result) {
