@@ -1,7 +1,8 @@
 /**
  * Created by prism on 8/2/15.
  */
-var mongoose = require('mongoose');
+var Promise = require("bluebird"),
+    mongoose = Promise.promisifyAll(require("mongoose"));
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
