@@ -1,7 +1,8 @@
 /**
  * Created by prism on 8/24/15.
  */
-var mongoose = require('mongoose'),
+var Promise = require("bluebird"),
+    mongoose = Promise.promisifyAll(require("mongoose")),
     moment = require('moment-timezone'),
     mongoosePaginate = require('mongoose-paginate');
 var Schema = mongoose.Schema;
