@@ -28,7 +28,7 @@ var app = express();
 var auth = require('./routes/auth')(Account);
 var dashboard = require('./routes/dashboard')(urls, tags);
 var ajax = require('./routes/ajax')(tags);
-var tag = require('./routes/tags')(tags);
+var tag = require('./routes/tags')(tags, urls);
 var all = require('./routes/all')(tags, urls);
 
 
