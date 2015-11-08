@@ -36,7 +36,7 @@ app.enable('trust proxy');
 app.use(compression());
 app.use(helmet());
 app.use(cors());
-app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));  // use static before session : https://www.airpair.com/express/posts/expressjs-and-passportjs-sessions-deep-dive
 app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
