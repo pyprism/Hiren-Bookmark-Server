@@ -4,7 +4,8 @@
  */
 //require('newrelic');
 var express = require('express'),
-    mongoose = require('mongoose'),
+    Promise = require("bluebird"),
+    mongoose = Promise.promisifyAll(require("mongoose")),
     bodyParser = require('body-parser'),
     Account = require('./models/users'),
     urls = require('./models/urls'),
@@ -120,16 +121,12 @@ app.use(function(err, req, res, next) {
 });
 
 
-
-
-var port = process.env.PORT || 4000;
-mongoose.connect( process.env.DB || 'mongodb://localhost/hiren_bookmark');
+mongoose.connect( process.env.hiren_lend || 'mongodb://localhost/hiren_bookmark');
 mongoose.connection.on('error', function(err) {
     console.error('MongoDB error: %s', err);
 });
 
-
-
+var port = process.env.PORT || 4000;
 app.listen(port, function(){
     console.log(moment().tz('Asia/Dhaka').format('DD-MM-YYYY HH:MM:SS') + ': ' + 'App is running on port: ' + port);
 });
