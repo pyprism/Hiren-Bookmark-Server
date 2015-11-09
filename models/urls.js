@@ -3,8 +3,7 @@
  */
 var Promise = require("bluebird"),
     mongoose = Promise.promisifyAll(require("mongoose")),
-    moment = require('moment-timezone'),
-    mongoosePaginate = require('mongoose-paginate');
+    moment = require('moment-timezone');
 var Schema = mongoose.Schema;
 
 var url = new Schema({
@@ -16,5 +15,4 @@ var url = new Schema({
     }
 });
 
-url.plugin(mongoosePaginate);
 module.exports = mongoose.model('URL', url);
