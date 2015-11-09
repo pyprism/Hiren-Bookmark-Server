@@ -44,6 +44,17 @@ var routes = function (Tag) {
             });
         });
 
+    //route for tag suggestion
+    router.route('/suggestion')
+        .get(function(req, res) {
+           Tag.findAsync({}, {'name': 1, '_id': 0}).then(function(hiren) {
+               res.send(hiren);
+           }).catch(function(err) {
+              res.status(500).send(err);
+           });
+        });
+
+
     return router;
 };
 
