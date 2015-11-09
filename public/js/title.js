@@ -22,15 +22,15 @@ $(document).ready(function() {
         datumTokenizer: Bloodhound.tokenizers.whitespace,
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
-            url: '/ajax/tags',
-            ajax: {
+            url: '/ajax/suggestion',
+/*            ajax: {
                 type: 'GET',
-                url: '/ajax/tags',
+                url: '/ajax/suggestion',
                 contentType: 'application/json',
                 success: function(tags) {
                     return tags;
                 }
-            }
+            }*/
         }
     });
     // passing in `null` for the `options` arguments will result in the default
