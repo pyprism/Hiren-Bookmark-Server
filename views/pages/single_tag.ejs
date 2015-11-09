@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('.././partials/head.ejs') %>
+    <link href="/css/simple-sidebar.css" rel="stylesheet">
+</head>
+
+<body>
+
+</body>
+<%- include('.././partials/sidebar.ejs') %>
+
+<!-- Page Content -->
+<div id="page-content-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <a href="#menu-toggle" class="btn btn-default" id="menu-toggle">Toggle Menu</a>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="wrapper"> -->
+<!-- <div class="col-md-4 col-md-offset-4"> -->
+<div class="col-md-8 col-md-offset-2">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <td>Title</td>
+                <td>Created on</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tbody>
+        <% values.forEach(function(value){ %>
+            <tr>
+                <td>
+                    <a href="<%= value.href %>" target="_blank"> <%= value.title %> </a>
+                </td>
+                <td>
+                    <%= value.createdOn %>
+                </td>
+                <td>
+                    <a href="/dashboard/tags/delete/<%= value._id %>?tag=<%= tag %>"> Delete</a>
+                </td>
+            </tr>
+        <% }); %>
+        </tbody>
+    </table>
+
+
+
+</div>
+<!--</div>
+</div>-->
+
+<!-- /#page-content-wrapper -->
+
+<%- include('.././partials/footer.ejs') %>
+<!-- Menu Toggle Script -->
+<script>
+    $(document).ready(function() {
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    });
+</script>
+</html>
