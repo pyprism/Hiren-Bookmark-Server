@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.conf import settings
-import bookmark
+from bookmark import urls as web
 
 urlpatterns = [
-    url(r'^/', include(bookmark.urls)),
+    url(r'^', include(web)),
 ]
 
 if settings.DEBUG:
