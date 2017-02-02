@@ -16,58 +16,62 @@
 </head>
 <body>
 
-<div class="container">
+<div class="containe">
     <nav class="navbar navbar-default no-margin">
-                    <div class="navbar-header fixed-brand">
-                        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle">
-                            <span class="glyphicon glyphicon-th-large" aria-hidden="true" />
-                        </button>
-                        <a class="navbar-brand" href="#">
-                            <i class="fa fa-heartbeat fa-4" /> Hiren Diary</a>
-                    </div>
+        <div class="navbar-header fixed-brand">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle">
+                <span class="glyphicon glyphicon-th-large" aria-hidden="true" ></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <i class="fa fa-heartbeat fa-4" > </i> Hiren Diary</a>
+        </div>
 
-                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                        <ul class="nav navbar-nav">
-                            <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true" /></button></li>
-                        </ul>
-                    </div>
-                </nav>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active" ><button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2"> <span class="glyphicon glyphicon-th-large" aria-hidden="true" > </span></button></li>
+            </ul>
+        </div>
+    </nav>
 
-                <div id="wrapper">
-                    <div id="sidebar-wrapper">
-                        <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
-                            <li>
-                                <a class href="/dashboard/posts/" ><span class="fa-stack fa-lg pull-left"><i class="fa fa-file-text fa-stack-1x " /></span> Posts</a>
-                            </li>
-                            <li>
-                                <a href="/dashboard/notes/"><span class="fa-stack fa-lg pull-left"><i class="fa fa-sticky-note-o fa-stack-1x "/></span> Notes</a>
-                            </li>
-                             <li>
-                                <a href="/dashboard/new/"><span class="fa-stack fa-lg pull-left"><i class="fa fa-plus-circle fa-stack-1x "/></span> Create New</a>
-                            </li>
-                            <li>
-                                <a  href="#" > <span class="fa-stack fa-lg pull-left"><i class="fa fa-sign-out fa-stack-1x "/></span> Log Out</a>
-                            </li>
-                        </ul>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+                <li>
+                    <a class href="{% url 'dashboard' %}" ><span class="fa-stack fa-lg pull-left">
+                        <i class="fa fa-dashboard fa-stack-1x " > </i></span> Dashboard</a>
+                </li>
+                <li>
+                    <a class href="{% url 'dashboard' %}" ><span class="fa-stack fa-lg pull-left">
+                        <i class="fa fa-save fa-stack-1x " > </i></span> Add New</a>
+                </li>
+                <li>
+                    <a class href="{% url 'dashboard' %}" ><span class="fa-stack fa-lg pull-left">
+                        <i class="fa fa-tags fa-stack-1x " > </i></span> Tags</a>
+                </li>
+                <li>
+                    <a class href="{% url 'logout' %}" ><span class="fa-stack fa-lg pull-left">
+                        <i class="fa fa-sign-out fa-stack-1x " > </i></span> Logout</a>
+                </li>
+            </ul>
+        </div>
+        <div id="page-content-wrapper">
+            <div class="container-fluid xyz">
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% block content %}
+                        {% endblock %}
                     </div>
-                    <div id="page-content-wrapper">
-                        <div class="container-fluid xyz">
-                            <div class="row">
-                                <div class="col-lg-12">
-                                    {% block content %}
-                                    {% endblock %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-</div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<script src="{% static 'js/bootstrap.min.js' %}"></script>
-<script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
-<script src="{% static 'js/sidebar.js' %}"></script>
-<script src="{% static 'js/forge.min.js' %}"></script>
-<script src="{% static 'js/moment.min.js' %}"></script>
-<script src="{% static 'js/sweetalert.min.js' %}"></script>
-<script src="{% static 'js/selectize.min.js' %}"></script>
+    <script src="{% static 'js/jquery-1.11.2.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/sidebar.js' %}"></script>
+    <script src="{% static 'js/forge.min.js' %}"></script>
+    <script src="{% static 'js/moment.min.js' %}"></script>
+    <script src="{% static 'js/sweetalert.min.js' %}"></script>
+    <script src="{% static 'js/selectize.min.js' %}"></script>
 </body>
 </html>
