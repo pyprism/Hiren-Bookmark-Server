@@ -69,5 +69,41 @@ function decrypt(encryptedHex, key, iv) {
 }
 
 function create() {
+    // key, salt generation
+    let iteration = $('$iteration').val();
+    let  random = forge.random.getBytesSync(32),
+        _salt = forge.random.getBytesSync(128),
+        key = forge.pkcs5.pbkdf2(sessionStorage.getItem('key'), _salt, iteration, 32);
 
+    // input tag string manipulation for django-taggit format
+    var tagStr = $('#tags').val();
+    var _tag =[];
+    var len = tagStr.length;
+    var hiren;
+    var x = "";
+    for( hiren=0; hiren<len; hiren++) {
+        if(tagStr[hiren] != ";"){
+            x = x + tagStr[hiren];
+            if( hiren + 1 == len)
+                _tag.push(x);
+        }
+        else{
+            _tag.push(x);
+            x = "";
+        }
+    }
+
+    //now the ajax !
+    $.ajax({
+        url: '/form/',
+        method: 'POST',
+        data: {
+            title: '',
+            url: '',
+            iv: '',
+            salt: _salt,
+            iteration: iteration,
+            tags: _tag
+        }
+    })
 }
