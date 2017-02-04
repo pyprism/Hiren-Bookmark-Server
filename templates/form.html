@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-    <form class="form-horizontal" > {% csrf_token %}
+    <form class="form-horizontal" onsubmit="create()"> {% csrf_token %}
         <div class="form-group" >
             <label class="control-label col-sm-2" >URL</label>
             <div class="col-sm-10">
@@ -11,7 +11,7 @@
         <div class="form-group" >
             <label class="control-label col-sm-2" >Title</label>
             <div class="col-sm-10">
-                <input type="text" class="form-control" required placeholder="URL Title"/>
+                <input type="text" id="title" class="form-control" required placeholder="URL Title"/>
             </div>
         </div>
         <div class="form-group" >
@@ -26,5 +26,11 @@
             </div>
         </div>
     </form>
+
+    <script>
+     window.onload = function () {
+         tag();
+     };
+    </script>
 
 {% endblock %}
