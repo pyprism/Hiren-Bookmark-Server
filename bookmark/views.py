@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from urllib.request import urlopen
 from .utils import Title
 from django.views.decorators.csrf import csrf_exempt
+from taggit.models import Tag
+from django.core import serializers
 
 
 def login(request):
@@ -30,6 +32,11 @@ def login(request):
             return redirect('/')
     else:
         return render(request, 'login.html')
+
+
+@login_required
+def secret(request):
+    return render(request, 'secret.html')
 
 
 @login_required
@@ -56,10 +63,22 @@ def form(request):
 @login_required
 @csrf_exempt
 def title(request):
+    """
+    Return url's title
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
-        # html_string = str(urlopen('url').read())
-        # parser = Title.TitleParser()
-        # parser.feed(html_string)
-        # print(parser.title)
-        print("called")
-        return request.POST.get('title')
+        try:
+            html_string = str(urlopen(str(request.POST.get('url'))).read())
+        except ValueError:
+            return JsonResponse({'error': 'Not a valid url'})
+        parser = Title.TitleParser()
+        parser.feed(html_string)
+        return JsonResponse({'title': parser.title})
+
+
+@login_required
+def tags(request):
+    tags = Tag.objects.all()
+    return JsonResponse(serializers.serialize('json', tags), safe=False)
