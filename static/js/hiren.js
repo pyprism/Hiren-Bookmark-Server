@@ -3,7 +3,7 @@
  */
 
 (function () {
-    $('#url').focusout(function () {  //post to title view
+    $('#url').focusout(function () {  //generate title based on url
         $('#title').attr("placeholder", "Loading title..");
         $.ajax({
             url: '/title/',
@@ -23,9 +23,11 @@
 
 function tag() { //function for selectize (tag input)
     $.ajax({
-        url: '/tags/'
+        url: '/tags/',
+        cache: false
     }).then(function (response) {
         console.log(response);
+        //([])
         // let nisha = [];
         // response.data.map(function (hiren) {
         //     let bunny = {'value': '', 'text': ''};
@@ -70,10 +72,10 @@ function decrypt(encryptedHex, key, iv) {
 
 function create() {
     // key, salt generation
-    let iteration = $('$iteration').val();
+    let iteration = $('#iteration').val();
     let  random = forge.random.getBytesSync(32),
         _salt = forge.random.getBytesSync(128),
-        key = forge.pkcs5.pbkdf2(sessionStorage.getItem('key'), _salt, iteration, 32);
+        key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'), _salt, iteration, 32);
 
     // input tag string manipulation for django-taggit format
     var tagStr = $('#tags').val();
@@ -98,12 +100,16 @@ function create() {
         url: '/form/',
         method: 'POST',
         data: {
-            title: '',
-            url: '',
-            iv: '',
-            salt: _salt,
-            iteration: iteration,
-            tags: _tag
+            title: encrypt($('#title').val(), key, random),
+            url: encrypt($('#url').val(), key, random),
+            iv: forge.util.bytesToHex(random),
+            salt: forge.util.bytesToHex(_salt),
+            tags: _tag,
+            iteration: iteration
         }
+    }).success(function (response) {
+        console.log(response);
+    }).error(function (error) {
+        console.error(error);
     })
 }
