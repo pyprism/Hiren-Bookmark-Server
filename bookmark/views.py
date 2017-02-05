@@ -19,14 +19,14 @@ def login(request):
     :return:
     """
     if request.user.is_authenticated:
-        return redirect('dashboard')
+        return redirect('secret')
     if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = auth.authenticate(username=username, password=password)
         if user:
             auth.login(request, user)
-            return redirect('dashboard')
+            return redirect('secret')
         else:
             messages.error(request, 'Username/Password is not valid!')
             return redirect('/')
@@ -50,6 +50,7 @@ def dashboard(request):
     return render(request, 'dashboard.html', {'bookmarks': bookmarks})
 
 
+@csrf_exempt
 @login_required
 def form(request):
     if request.method == 'POST':
@@ -57,6 +58,8 @@ def form(request):
         if frm.is_valid():
             frm.save()
             return JsonResponse(frm, safe=False)
+        else:
+            return JsonResponse({'error': frm.errors})
     return render(request, 'form.html')
 
 
