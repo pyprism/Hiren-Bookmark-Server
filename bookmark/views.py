@@ -57,7 +57,7 @@ def form(request):
         frm = BookmarkForm(request.POST)
         if frm.is_valid():
             frm.save()
-            return JsonResponse(frm, safe=False)
+            return JsonResponse({'status': 'created'})
         else:
             return JsonResponse({'error': frm.errors})
     return render(request, 'form.html')
@@ -83,5 +83,6 @@ def title(request):
 
 @login_required
 def tags(request):
-    tags = Tag.objects.all()
+    tags = Tag.objects.all().values('name')
+    # return JsonResponse(tags, safe=False)
     return JsonResponse(serializers.serialize('json', tags), safe=False)

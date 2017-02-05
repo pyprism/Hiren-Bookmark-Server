@@ -99,16 +99,20 @@ function create() {
     $.ajax({
         url: '/form/',
         method: 'POST',
+        //processData: false,
         data: {
             title: encrypt($('#title').val(), key, random),
             url: encrypt($('#url').val(), key, random),
             iv: forge.util.bytesToHex(random),
             salt: forge.util.bytesToHex(_salt),
-            tags: _tag,
+            //'tags[]': encodeURIComponent(_tag),
+            'tags[]': _tag,
             iteration: iteration
         }
     }).success(function (response) {
-        console.log(response);
+        if(response.status === "created"){
+            sweetAlert('Saved', "Url Saved uccessfully", 'success');
+        }
     }).error(function (error) {
         console.error(error);
     })
