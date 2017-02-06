@@ -10,6 +10,8 @@ from .utils import Title
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
 from django.core import serializers
+import json
+from django.core.serializers.json import DjangoJSONEncoder
 
 
 def login(request):
@@ -83,6 +85,8 @@ def title(request):
 
 @login_required
 def tags(request):
-    tags = Tag.objects.all().values('name')
+    tags = Tag.objects.all().values_list('name')
+    x = json.dumps(list(tags), cls=DjangoJSONEncoder)
+    return JsonResponse(x, safe=False)
     # return JsonResponse(tags, safe=False)
-    return JsonResponse(serializers.serialize('json', tags), safe=False)
+    # return JsonResponse(serializers.serialize('json', tags), safe=False)
