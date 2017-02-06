@@ -25,8 +25,11 @@ function tag() { //function for selectize (tag input)
     $.ajax({
         url: '/tags/',
         cache: false
-    }).then(function (response) {
+    }).success(function (response) {
         console.log(response);
+        for(let x of response){
+            console.log(x);
+        }
         //([])
         // let nisha = [];
         // response.data.map(function (hiren) {
@@ -46,6 +49,8 @@ function tag() { //function for selectize (tag input)
                 }
             }
         });
+    }).error(function (err) {
+        console.error(err);
     });
 }
 
@@ -99,19 +104,18 @@ function create() {
     $.ajax({
         url: '/form/',
         method: 'POST',
-        //processData: false,
         data: {
             title: encrypt($('#title').val(), key, random),
             url: encrypt($('#url').val(), key, random),
             iv: forge.util.bytesToHex(random),
             salt: forge.util.bytesToHex(_salt),
-            //'tags[]': encodeURIComponent(_tag),
-            'tags[]': _tag,
+            tags: JSON.stringify(_tag),
             iteration: iteration
         }
     }).success(function (response) {
+        console.log(response);
         if(response.status === "created"){
-            sweetAlert('Saved', "Url Saved uccessfully", 'success');
+            sweetAlert('Saved', "Url Saved successfully", 'success');
         }
     }).error(function (error) {
         console.error(error);
