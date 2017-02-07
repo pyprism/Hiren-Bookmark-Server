@@ -44,17 +44,43 @@ def secret(request):
 @login_required
 def dashboard(request):
     """
-    Returns whole bookmark data
+    just returns the f@%king template
     :param request:
     :return:
     """
-    bookmarks = Bookmark.objects.order_by('-id')
-    return render(request, 'dashboard.html', {'bookmarks': bookmarks})
+    return render(request, 'dashboard.html')
+
+
+@login_required
+def dashboard_ajax(request):
+    """
+    view dashboard's ajax
+    :param request:
+    :return:
+    """
+    bookmarks = Bookmark.objects.all()
+    bunny = []
+    for i in bookmarks:
+        hiren = {}
+        hiren['id'] = i.pk
+        hiren['title'] = i.title
+        hiren['url'] = i.url
+        hiren['iv'] = i.iv
+        hiren['salt'] = i.salt
+        hiren['iteration'] = i.iteration
+        hiren['created_at'] = i.created_at
+        bunny.append(hiren)
+    return JsonResponse(bunny, safe=False)
 
 
 @csrf_exempt
 @login_required
 def form(request):
+    """
+    Handle form input
+    :param request:
+    :return:
+    """
     if request.method == 'POST':
         frm = BookmarkForm(request.POST)
         if frm.is_valid():
@@ -85,8 +111,16 @@ def title(request):
 
 @login_required
 def tags(request):
-    tags = Tag.objects.all().values_list('name')
-    x = json.dumps(list(tags), cls=DjangoJSONEncoder)
-    return JsonResponse(x, safe=False)
-    # return JsonResponse(tags, safe=False)
-    # return JsonResponse(serializers.serialize('json', tags), safe=False)
+    """
+    Returns all tag names
+    :param request:
+    :return:
+    """
+    tags = Tag.objects.all().values('name')
+    nisha = []
+    for i in tags:
+        if i['name'] == '[' or i['name'] == ']':  # for jquery massacre !
+            pass
+        else:
+            nisha.append(i['name'])
+    return JsonResponse(nisha, safe=False)
