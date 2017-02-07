@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from bookmark import views
 from django.contrib.auth import views as auth
 
@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^dashboard_ajax/$', views.dashboard_ajax),
     url(r'^form/$', views.form, name='form'),
     url(r'^title/$', views.title),
-    url(r'^tags/$', views.tags),
+    url(r'^tags_ajax/$', views.tags),
+    url(r'^tags/$', views.tag_cloud, name='tags'),
 ]
