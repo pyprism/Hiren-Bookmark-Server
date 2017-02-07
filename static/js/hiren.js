@@ -23,7 +23,7 @@
 
 function tag() { //function for selectize (tag input)
     $.ajax({
-        url: '/tags/',
+        url: '/tags_ajax/',
         cache: false
     }).success(function (response) {
         let nisha = [];
@@ -33,7 +33,6 @@ function tag() { //function for selectize (tag input)
             bunny['text'] = hiren;
             nisha.push(bunny);
         });
-        console.log(nisha);
         $('#tags').selectize({
             delimiter: ';',
             persist: false,
@@ -124,15 +123,14 @@ function table(){
     }).success(function (response) {
         let nisha = [];
         response.map(function (hiren) {
-            //let bunny = {'id': '', 'title': '', 'created_at': ''};
             let bunny = {};
             let salt = forge.util.hexToBytes(hiren.salt);
             let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
                 salt, hiren.iteration, 32);
             bunny['id'] = hiren.id;
-            bunny['title'] = decrypt(hiren.title, key, hiren.iv);
-            bunny['url'] = decrypt(hiren.url, key, hiren.iv);
-            bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY hh:mm:ss A");
+            bunny['title'] = "<a href="+ "'" + decrypt(hiren.url, key, hiren.iv) + "'" + "target='_blank' >"
+                + decrypt(hiren.title, key, hiren.iv) + "</a>";
+            bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY");
             nisha.push(bunny);
         });
 
@@ -154,4 +152,18 @@ function table(){
             data: nisha
         });
     });
+}
+
+function tag_cloud() {
+    $.ajax({
+        url: '/tags/',
+        contentType: 'application/json'
+    }).success(function (response) {
+        let words = [];
+        response.map(function (hiren) {
+            console.log(hiren);
+        });
+        console.log(words);
+        $('#tag_cloud').jQCloud(response);
+    })
 }
