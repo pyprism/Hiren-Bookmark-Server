@@ -124,3 +124,19 @@ def tags(request):
         else:
             nisha.append(i['name'])
     return JsonResponse(nisha, safe=False)
+
+
+@login_required
+def tag_cloud(request):
+    if request.content_type == 'application/json':
+        tags = Tag.objects.all().values('name')
+        clouds = []
+        for tag in tags:
+            cloud = {}
+            if not tag['name'] == '[' or tag['name'] == ']':
+                bookmark = Bookmark.objects.filter(tags__name__in=[tag['name']]).count()
+                cloud['text'] = tag['name']
+                cloud['weight'] = bookmark
+                clouds.append(cloud)
+        return JsonResponse(clouds, safe=False)
+    return render(request, 'tag_cloud.html')
