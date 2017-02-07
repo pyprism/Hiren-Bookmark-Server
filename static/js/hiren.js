@@ -26,22 +26,18 @@ function tag() { //function for selectize (tag input)
         url: '/tags/',
         cache: false
     }).success(function (response) {
-        console.log(response);
-        for(let x of response){
-            console.log(x);
-        }
-        //([])
-        // let nisha = [];
-        // response.data.map(function (hiren) {
-        //     let bunny = {'value': '', 'text': ''};
-        //     bunny['value'] = hiren.name;
-        //     bunny['text'] = hiren.name;
-        //     nisha.push(bunny);
-        // });
+        let nisha = [];
+        response.map(function (hiren) {
+            let bunny = {'value': '', 'text': ''};
+            bunny['value'] = hiren;
+            bunny['text'] = hiren;
+            nisha.push(bunny);
+        });
+        console.log(nisha);
         $('#tags').selectize({
             delimiter: ';',
             persist: false,
-            //options: nisha,
+            options: nisha,
             create: function(input) {
                 return {
                     value: input,
@@ -113,11 +109,49 @@ function create() {
             iteration: iteration
         }
     }).success(function (response) {
-        console.log(response);
         if(response.status === "created"){
             sweetAlert('Saved', "Url Saved successfully", 'success');
+            document.getElementById('form').reset();
         }
     }).error(function (error) {
         console.error(error);
     })
+}
+
+function table(){
+    $.ajax({
+        url: '/dashboard_ajax/'
+    }).success(function (response) {
+        let nisha = [];
+        response.map(function (hiren) {
+            //let bunny = {'id': '', 'title': '', 'created_at': ''};
+            let bunny = {};
+            let salt = forge.util.hexToBytes(hiren.salt);
+            let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
+                salt, hiren.iteration, 32);
+            bunny['id'] = hiren.id;
+            bunny['title'] = decrypt(hiren.title, key, hiren.iv);
+            bunny['url'] = decrypt(hiren.url, key, hiren.iv);
+            bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY hh:mm:ss A");
+            nisha.push(bunny);
+        });
+
+        $('#table').bootstrapTable({
+            pagination: true,
+            pageSize: 22,
+            search: true,
+            sortable: true,
+            columns: [{
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'title',
+                title: 'Title'
+            }, {
+                field: 'created_at',
+                title: 'Created At'
+            }],
+            data: nisha
+        });
+    });
 }
