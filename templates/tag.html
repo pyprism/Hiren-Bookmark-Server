@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+    <input type="hidden" id="tag_name" value={{ tag }}>
+    <table id="table"></table>
+    <script>
+     window.onload = function () {
+         bookmark_by_tag();
+     };
+    </script>
+{% endblock %}
