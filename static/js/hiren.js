@@ -159,11 +159,48 @@ function tag_cloud() {
         url: '/tags/',
         contentType: 'application/json'
     }).success(function (response) {
-        let words = [];
-        response.map(function (hiren) {
-            console.log(hiren);
+        $('#tag_cloud').jQCloud(response, {
+            width: 600,
+            height: 250,
+            shape: 'rectangular'
         });
-        console.log(words);
-        $('#tag_cloud').jQCloud(response);
     })
+}
+
+function bookmark_by_tag() {
+    $.ajax({
+        url: '/tags/' + $('#tag_name').val() + '/',
+        contentType: 'application/json'
+    }).success(function (response) {
+        let nisha = [];
+        response.map(function (hiren) {
+            let bunny = {};
+            let salt = forge.util.hexToBytes(hiren.salt);
+            let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
+                salt, hiren.iteration, 32);
+            bunny['id'] = hiren.id;
+            bunny['title'] = "<a href="+ "'" + decrypt(hiren.url, key, hiren.iv) + "'" + "target='_blank' >"
+                + decrypt(hiren.title, key, hiren.iv) + "</a>";
+            bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY");
+            nisha.push(bunny);
+        });
+
+        $('#table').bootstrapTable({
+            pagination: true,
+            pageSize: 22,
+            search: true,
+            sortable: true,
+            columns: [{
+                field: 'id',
+                title: 'ID'
+            }, {
+                field: 'title',
+                title: 'Title'
+            }, {
+                field: 'created_at',
+                title: 'Created At'
+            }],
+            data: nisha
+        });
+    });
 }
