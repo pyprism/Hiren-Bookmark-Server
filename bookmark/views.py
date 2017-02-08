@@ -9,9 +9,6 @@ from urllib.request import urlopen
 from .utils import Title
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
-from django.core import serializers
-import json
-from django.core.serializers.json import DjangoJSONEncoder
 
 
 def login(request):
@@ -128,6 +125,11 @@ def tags(request):
 
 @login_required
 def tag_cloud(request):
+    """
+    Generate tag cloud
+    :param request:
+    :return:
+    """
     if request.content_type == 'application/json':
         tags = Tag.objects.all().values('name')
         clouds = []
@@ -145,6 +147,12 @@ def tag_cloud(request):
 
 @login_required
 def bookmark_by_tag(request, name=None):
+    """
+    Returns bookmarks by name
+    :param request:
+    :param name:
+    :return:
+    """
     if request.content_type == 'application/json':
         bookmark = Bookmark.objects.filter(tags__name__in=[name])
         bunny = []
