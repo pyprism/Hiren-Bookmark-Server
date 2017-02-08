@@ -133,10 +133,30 @@ def tag_cloud(request):
         clouds = []
         for tag in tags:
             cloud = {}
-            if not tag['name'] == '[' or tag['name'] == ']':
+            if not (tag['name'] == '[' or tag['name'] == ']'):
                 bookmark = Bookmark.objects.filter(tags__name__in=[tag['name']]).count()
                 cloud['text'] = tag['name']
                 cloud['weight'] = bookmark
+                cloud['link'] = '/tags/' + tag['name'] + '/'
                 clouds.append(cloud)
         return JsonResponse(clouds, safe=False)
     return render(request, 'tag_cloud.html')
+
+
+@login_required
+def bookmark_by_tag(request, name=None):
+    if request.content_type == 'application/json':
+        bookmark = Bookmark.objects.filter(tags__name__in=[name])
+        bunny = []
+        for i in bookmark:
+            hiren = {}
+            hiren['id'] = i.pk
+            hiren['title'] = i.title
+            hiren['url'] = i.url
+            hiren['iv'] = i.iv
+            hiren['salt'] = i.salt
+            hiren['iteration'] = i.iteration
+            hiren['created_at'] = i.created_at
+            bunny.append(hiren)
+        return JsonResponse(bunny, safe=False)
+    return render(request, 'tag.html', {'tag': name})
