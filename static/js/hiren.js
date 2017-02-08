@@ -49,7 +49,7 @@ function tag() { //function for selectize (tag input)
     });
 }
 
-function encrypt(text, key, iv) {
+function encrypt(text, key, iv) { //function for encryption
     var cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
     cipher.update(forge.util.createBuffer(text));
@@ -58,7 +58,7 @@ function encrypt(text, key, iv) {
     return encrypted.toHex();
 }
 
-function decrypt(encryptedHex, key, iv) {
+function decrypt(encryptedHex, key, iv) {  // decryption
     var decipher = forge.cipher.createDecipher('AES-CBC', key);
     decipher.start({iv: forge.util.hexToBytes(iv)});
     decipher.update(forge.util.createBuffer(forge.util.hexToBytes(encryptedHex)));
@@ -70,7 +70,7 @@ function decrypt(encryptedHex, key, iv) {
     return decipher.output.data;
 }
 
-function create() {
+function create() { // function url input form
     // key, salt generation
     let iteration = $('#iteration').val();
     let  random = forge.random.getBytesSync(32),
@@ -117,7 +117,7 @@ function create() {
     })
 }
 
-function table(){
+function table(){  // function for table rendering in dashboard view
     $.ajax({
         url: '/dashboard_ajax/'
     }).success(function (response) {
@@ -154,7 +154,7 @@ function table(){
     });
 }
 
-function tag_cloud() {
+function tag_cloud() { //generate tag cloud
     $.ajax({
         url: '/tags/',
         contentType: 'application/json'
@@ -167,7 +167,7 @@ function tag_cloud() {
     })
 }
 
-function bookmark_by_tag() {
+function bookmark_by_tag() { // generate table in tag_by_name view
     $.ajax({
         url: '/tags/' + $('#tag_name').val() + '/',
         contentType: 'application/json'
