@@ -11,5 +11,6 @@ urlpatterns = [
     url(r'^form/$', views.form, name='form'),
     url(r'^title/$', views.title),
     url(r'^tags_ajax/$', views.tags),
-    url(r'^tags/$', views.tag_cloud, name='tags'),
+    url(r'^tags/(?P<name>\w+)/$', views.bookmark_by_tag),
+    url(r'^tags/$', views.tag_cloud, name='tags')
 ]
