@@ -4,7 +4,7 @@ django-debug-toolbar==1.6
 django-taggit==0.22.0
 freezegun==0.3.8
 packaging==16.8
-psycopg2==2.6.2
+psycopg2==2.7
 pyparsing==2.1.10
 python-dateutil==2.6.0
 six==1.10.0
