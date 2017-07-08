@@ -1,11 +1,16 @@
 language: python
 python:
-  - "3.5"
+  - "3.6"
 
 cache: pip
 
 addons:
-  postgresql: "9.3"
+  - postgresql: "9.5"
+  - redis-server
+
+env:
+  - DEBUG=True
+  - SECRET_KEY="Luke I am your father"
 
 install:
   - pip install -r requirements.txt --quiet
