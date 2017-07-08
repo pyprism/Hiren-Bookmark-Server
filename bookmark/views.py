@@ -9,6 +9,7 @@ from urllib.request import urlopen
 from .utils import Title
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
+from django.shortcuts import get_object_or_404
 
 
 def login(request):
@@ -168,3 +169,15 @@ def bookmark_by_tag(request, name=None):
             bunny.append(hiren)
         return JsonResponse(bunny, safe=False)
     return render(request, 'tag.html', {'tag': name})
+
+
+@login_required
+def bookmark_readonly(request, pk=None):
+    """
+    Serve bookmark for readonly view
+    :param request:
+    :param pk:
+    :return:
+    """
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+    return render(request, 'bookmark_readonly.html', {'bookmark': bookmark})
