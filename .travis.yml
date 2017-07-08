@@ -4,13 +4,14 @@ python:
 
 cache: pip
 
-addons:
-  - postgresql: "9.5"
+services:
   - redis-server
+
+addons:
+  postgresql: "9.5"
 
 env:
   - DEBUG=True
-  - SECRET_KEY="Luke I am your father"
 
 install:
   - pip install -r requirements.txt --quiet
