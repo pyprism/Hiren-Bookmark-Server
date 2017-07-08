@@ -127,7 +127,7 @@ function table(){  // function for table rendering in dashboard view
             let salt = forge.util.hexToBytes(hiren.salt);
             let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
                 salt, hiren.iteration, 32);
-            bunny['id'] = hiren.id;
+            bunny['id'] = "<a href=" + "'/dashboard/"+ hiren.id + "/' >" + hiren.id + "</a>";
             bunny['title'] = "<a href="+ "'" + decrypt(hiren.url, key, hiren.iv) + "'" + "target='_blank' >"
                 + decrypt(hiren.title, key, hiren.iv) + "</a>";
             bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY");
