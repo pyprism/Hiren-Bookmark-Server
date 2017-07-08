@@ -43,7 +43,7 @@ class LoginViewTest(TestCase):
         self.assertTemplateUsed(response, 'login.html')
 
 
-class SecretView(TestCase):
+class SecretViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
@@ -57,3 +57,19 @@ class SecretView(TestCase):
     def test_login_url_resolves_to_login_view(self):
         found = resolve('/secret/')
         self.assertEqual(found.func, views.secret)
+
+
+class DashboardViewTest(TestCase):
+
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+
+    def test_secret_view_returns_correct_template(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard/')
+        self.assertTemplateUsed(response, 'dashboard.html')
+
+    def test_login_url_resolves_to_login_view(self):
+        found = resolve('/dashboard/')
+        self.assertEqual(found.func, views.dashboard)
