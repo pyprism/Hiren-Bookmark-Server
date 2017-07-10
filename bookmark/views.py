@@ -179,5 +179,15 @@ def bookmark_readonly(request, pk=None):
     :param pk:
     :return:
     """
-    bookmark = get_object_or_404(Bookmark, pk=pk)
-    return render(request, 'bookmark_readonly.html', {'bookmark': bookmark})
+    if request.content_type == 'application/json':
+        bookmark = Bookmark.objects.get(pk=pk)
+        hiren = {}
+        hiren['id'] = bookmark.pk
+        hiren['title'] = bookmark.title
+        hiren['url'] = bookmark.url
+        hiren['iv'] = bookmark.iv
+        hiren['salt'] = bookmark.salt
+        hiren['iteration'] = bookmark.iteration
+        hiren['created_at'] = bookmark.created_at
+        return JsonResponse(hiren, safe=False)
+    return render(request, 'bookmark_readonly.html', {'pk': pk})
