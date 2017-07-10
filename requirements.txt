@@ -11,7 +11,7 @@ funcy==1.8
 packaging==16.8
 psycopg2==2.7.1
 pyparsing==2.2.0
-python-dateutil==2.6.0
+python-dateutil==2.6.1
 pytz==2017.2
 raven==6.1.0
 rcssmin==1.0.6
