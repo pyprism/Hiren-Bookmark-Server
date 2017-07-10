@@ -2,34 +2,34 @@
 {% block content %}
 
     <form class="form-horizontal" id="form">
-        <div class="form-group" >
-            <label class="control-label col-sm-2" >URL</label>
-            <div class="col-sm-10">
-                <input type="url" id="url" class="form-control" required placeholder="URL"/>
-            </div>
-        </div>
+        <input type="hidden" id="pk" value="{{ pk }}">
         <div class="form-group" >
             <label class="control-label col-sm-2" >Title</label>
             <div class="col-sm-10">
-                <input type="text" id="title" class="form-control" required placeholder="URL Title"/>
+                <p id="title" class="form-control-static" />
             </div>
         </div>
         <div class="form-group" >
-            <label class="control-label col-sm-2">Tags</label>
+            <label class="control-label col-sm-2" >URL</label>
             <div class="col-sm-10">
-                <input type="text" id="tags" required class="form-control " />
-            </div>
-        </div>
-        <div class="form-group" >
-            <label class="control-label col-sm-2">Number Of Iteration</label>
-            <div class="col-sm-10">
-                <input type="number" id="iteration" value="2000" required class="form-control " />
+                <p id="url" class="form-control-static" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
-                <button type="button" onclick="create()" class="btn btn-default"><i class="fa fa-save" ></i> Save</button>
+                <div class="btn-group">
+                    <a href="/dashboard/{{ pk }}/edit/"><button type="button" class="btn btn-default">
+                        <i class="fa fa-save" ></i> Edit</button></a>
+                    <a href="/dashboard/{{ pk }}/delete/"><button type="button" class="btn btn-default">
+                        <i class="fa fa-save" ></i> Delete</button></a>
+                </div>
+
             </div>
         </div>
     </form>
+    <script>
+        window.onload = function () {
+            bookmark_readonly();
+        };
+    </script>
 {% endblock %}
