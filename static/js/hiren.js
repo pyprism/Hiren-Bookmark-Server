@@ -204,3 +204,19 @@ function bookmark_by_tag() { // generate table in tag_by_name view
         });
     });
 }
+
+function  bookmark_readonly() {
+    const id = $('#pk').val();
+    $.ajax({
+        url: '/dashboard/' + id + '/',
+        contentType: 'application/json'
+    }).success(function (hiren) {
+        const salt = forge.util.hexToBytes(hiren.salt);
+        const key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
+            salt, hiren.iteration, 32);
+        const title = decrypt(hiren.title, key, hiren.iv);
+        const url = decrypt(hiren.url, key, hiren.iv);
+        $('#title').text(title);
+        $('#url').text(url);
+    })
+}
