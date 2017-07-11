@@ -109,7 +109,7 @@ function create() { // function url input form
         }
     }).success(function (response) {
         if(response.status === "created"){
-            sweetAlert('Saved', "Url Saved successfully", 'success');
+            sweetAlert('Saved', "Url saved successfully", 'success');
             document.getElementById('form').reset();
         }
     }).error(function (error) {
@@ -205,7 +205,7 @@ function bookmark_by_tag() { // generate table in tag_by_name view
     });
 }
 
-function  bookmark_readonly() {
+function  bookmark_readonly() {  // set value in  readonly template
     const id = $('#pk').val();
     $.ajax({
         url: '/dashboard/' + id + '/',
@@ -218,5 +218,53 @@ function  bookmark_readonly() {
         const url = decrypt(hiren.url, key, hiren.iv);
         $('#title').text(title);
         $('#url').text(url);
+    })
+}
+
+function bookmark_edit() { // set value in  edit template
+    const id = $('#pk').val();
+    $.ajax({
+        url: '/dashboard/' + id + '/',
+        contentType: 'application/json'
+    }).success(function (hiren) {
+        const salt = forge.util.hexToBytes(hiren.salt);
+        const key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
+            salt, hiren.iteration, 32);
+        const title = decrypt(hiren.title, key, hiren.iv);
+        const url = decrypt(hiren.url, key, hiren.iv);
+        $('#title').val(title);
+        $('#url').val(url);
+        $('#iteration').val(hiren.iteration);
+    })
+}
+
+function bookmark_edit_form() {
+    // key, salt generation
+    const id = $('#pk').val();
+    console.log($('#title').val());
+    let iteration = $('#iteration').val();
+    let  random = forge.random.getBytesSync(32),
+        _salt = forge.random.getBytesSync(128),
+        key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'), _salt, iteration, 32);
+
+    //now the ajax !
+    $.ajax({
+        url: '/dashboard/' + id + '/edit/',
+        method: 'POST',
+        data: {
+            title: encrypt($('#title').val(), key, random),
+            url: encrypt($('#url').val(), key, random),
+            iv: forge.util.bytesToHex(random),
+            salt: forge.util.bytesToHex(_salt),
+            iteration: iteration
+        }
+    }).success(function (response) {
+        console.log(response);
+        if(response.status === "created"){
+            sweetAlert('Saved', "Url updated successfully", 'success');
+            document.getElementById('form').reset();
+        }
+    }).error(function (error) {
+        console.error(error);
     })
 }
