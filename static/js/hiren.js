@@ -238,7 +238,7 @@ function bookmark_edit() { // set value in  edit template
     })
 }
 
-function bookmark_edit_form() {
+function bookmark_edit_form() {  // handles edit bookmark form
     // key, salt generation
     const id = $('#pk').val();
     console.log($('#title').val());
@@ -259,12 +259,11 @@ function bookmark_edit_form() {
             iteration: iteration
         }
     }).success(function (response) {
-        console.log(response);
         if(response.status === "created"){
             sweetAlert('Saved', "Url updated successfully", 'success');
-            document.getElementById('form').reset();
         }
     }).error(function (error) {
         console.error(error);
+        sweetAlert('Error', "Check console!", 'error');
     })
 }
