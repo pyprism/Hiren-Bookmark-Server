@@ -45,9 +45,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'taggit',
     'bookmark',
     'debug_toolbar',
+    'rest_framework',
+    'api',
+    'rest_framework.authtoken'
     'compressor',
 ]
 
@@ -58,6 +62,7 @@ if DEBUG is False:
     ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,7 +118,7 @@ else:
             'HOST': 'localhost',
             'PORT': '',
             'CONN_MAX_AGE': 600,
-            }
+        }
     }
 
 
@@ -277,3 +282,27 @@ CACHEOPS = {
 COMPRESS_ROOT = os.path.join(BASE_DIR, "static")
 
 COMPRESS_OFFLINE = True
+
+# DRF
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer'
+    ),
+    'DEFAULT_PARSER_CLASSES': (
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser'
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ),
+}
+
+# CORS
+CORS_ORIGIN_ALLOW_ALL = True
