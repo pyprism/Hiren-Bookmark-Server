@@ -196,12 +196,17 @@ def bookmark_readonly(request, pk=None):
 @csrf_exempt
 @login_required
 def bookmark_edit(request, pk=None):
+    """
+    view for edit form ajax
+    :param request:
+    :param pk:
+    :return:
+    """
     if request.method == 'POST':
         bookmark = Bookmark.objects.get(pk=pk)
         frm = BookmarkFormEdit(request.POST, instance=bookmark)
         if frm.is_valid():
-            x = frm.save()
-            print(x.iteration)
+            frm.save()
             return JsonResponse({'status': 'created'})
         else:
             return JsonResponse({'error': frm.errors})
