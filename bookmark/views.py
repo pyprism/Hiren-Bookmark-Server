@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import auth
 from django.contrib import messages
 from .models import Bookmark
-from .forms import BookmarkForm
+from .forms import BookmarkForm, BookmarkFormEdit
 from django.http import JsonResponse
 from urllib.request import urlopen
 from .utils import Title
@@ -174,7 +174,7 @@ def bookmark_by_tag(request, name=None):
 @login_required
 def bookmark_readonly(request, pk=None):
     """
-    Serve bookmark for readonly view
+    Serve bookmark for readonly and edit template
     :param request:
     :param pk:
     :return:
@@ -191,3 +191,18 @@ def bookmark_readonly(request, pk=None):
         hiren['created_at'] = bookmark.created_at
         return JsonResponse(hiren, safe=False)
     return render(request, 'bookmark_readonly.html', {'pk': pk})
+
+
+@csrf_exempt
+@login_required
+def bookmark_edit(request, pk=None):
+    if request.method == 'POST':
+        bookmark = Bookmark.objects.get(pk=pk)
+        frm = BookmarkFormEdit(request.POST, instance=bookmark)
+        if frm.is_valid():
+            x = frm.save()
+            print(x.iteration)
+            return JsonResponse({'status': 'created'})
+        else:
+            return JsonResponse({'error': frm.errors})
+    return render(request, 'bookmark_edit.html', {'pk': pk})
