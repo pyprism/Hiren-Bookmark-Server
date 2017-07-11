@@ -12,3 +12,9 @@ class BrowserForm(ModelForm):
     class Meta:
         model = Browser
         fields = '__all__'
+
+
+class BookmarkFormEdit(ModelForm):
+    class Meta:
+        model = Browser
+        exclude = ('tags', 'browser_name', 'device_name', 'profile_name')
