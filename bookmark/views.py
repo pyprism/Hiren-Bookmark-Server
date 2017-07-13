@@ -211,3 +211,11 @@ def bookmark_edit(request, pk=None):
         else:
             return JsonResponse({'error': frm.errors})
     return render(request, 'bookmark_edit.html', {'pk': pk})
+
+
+@login_required
+def delete(request, pk=None):
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+    bookmark.delete()
+    messages.info(request, "Bookmark deleted")
+    return redirect('dashboard')
