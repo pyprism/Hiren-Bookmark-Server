@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Bookmark, Browser
+from .models import Bookmark
 
 
 class BookmarkForm(ModelForm):
