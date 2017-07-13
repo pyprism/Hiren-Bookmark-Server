@@ -21,6 +21,7 @@
     })
 })();
 
+
 function tag() { //function for selectize (tag input)
     $.ajax({
         url: '/tags_ajax/',
@@ -49,6 +50,37 @@ function tag() { //function for selectize (tag input)
     });
 }
 
+function check(url) {  // check for existing url or create the document
+    const db = new PouchDB('hiren');
+    db.createIndex({
+        index: {
+            fields: ["url"]
+        }
+    }).then(function (result) {
+        db.find({
+            selector: {url: url},
+        }).then(function (result) {
+            if(result.docs.length) {
+                return false;
+            } else {
+                db.post({
+                    url: url
+                }).then(function (response) {
+                    console.log(response.ok);
+                    return true;
+                }).catch(function (err) {
+                    console.log(err);
+                });
+            }
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
+
+
 function encrypt(text, key, iv) { //function for encryption
     var cipher = forge.cipher.createCipher('AES-CBC', key);
     cipher.start({iv: iv});
@@ -71,7 +103,14 @@ function decrypt(encryptedHex, key, iv) {  // decryption
 }
 
 function create() { // function url input form
+
     // key, salt generation
+    const url = $("#url").val();
+    if(!check(url)) {
+        sweetAlert("Error", "URL already exists", "error");
+        return;
+    }
+
     let iteration = $('#iteration').val();
     let  random = forge.random.getBytesSync(32),
         _salt = forge.random.getBytesSync(128),
@@ -101,7 +140,7 @@ function create() { // function url input form
         method: 'POST',
         data: {
             title: encrypt($('#title').val(), key, random),
-            url: encrypt($('#url').val(), key, random),
+            url: encrypt(url, key, random),
             iv: forge.util.bytesToHex(random),
             salt: forge.util.bytesToHex(_salt),
             tags: JSON.stringify(_tag),
@@ -128,7 +167,7 @@ function table(){  // function for table rendering in dashboard view
             let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
                 salt, hiren.iteration, 32);
             bunny['id'] = "<a href=" + "'/dashboard/"+ hiren.id + "/' >" + hiren.id + "</a>";
-            bunny['title'] = "<a href="+ "'" + decrypt(hiren.url, key, hiren.iv) + "'" + "target='_blank' >"
+            bunny['title'] = "<a href="+ "'" + decrypt(hiren.url, key, hiren.iv) + "'" + " target='_blank' >"
                 + decrypt(hiren.title, key, hiren.iv) + "</a>";
             bunny['created_at'] = moment.utc(hiren.created_at).local().format("dddd, DD MMMM YYYY");
             nisha.push(bunny);
