@@ -70,6 +70,17 @@ class DashboardViewTest(TestCase):
         response = self.c.get('/dashboard/')
         self.assertTemplateUsed(response, 'dashboard.html')
 
-    def test_login_url_resolves_to_login_view(self):
+    def test_url_resolves_to_correct_view(self):
         found = resolve('/dashboard/')
         self.assertEqual(found.func, views.dashboard)
+
+
+class DashboardAJaxViewTest(TestCase):
+
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+
+    def test_url_resolves_to_correct_view(self):
+        found = resolve('/dashboard_ajax/')
+        self.assertEqual(found.func, views.dashboard_ajax)
