@@ -8,12 +8,6 @@ class BookmarkForm(ModelForm):
         fields = '__all__'
 
 
-class BrowserForm(ModelForm):
-    class Meta:
-        model = Browser
-        fields = '__all__'
-
-
 class BookmarkFormEdit(ModelForm):
     class Meta:
         model = Bookmark
