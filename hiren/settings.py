@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'debug_toolbar',
     'rest_framework',
     'api',
-    'rest_framework.authtoken'
+    'rest_framework.authtoken',
     'compressor',
 ]
 
