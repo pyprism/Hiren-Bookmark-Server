@@ -80,7 +80,16 @@ class DashboardAJaxViewTest(TestCase):
     def setUp(self):
         self.c = Client()
         self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        Bookmark.objects.create(title="title", url="hi", iteration=15)
 
     def test_url_resolves_to_correct_view(self):
         found = resolve('/dashboard_ajax/')
         self.assertEqual(found.func, views.dashboard_ajax)
+
+    @freeze_time('05/12/2012')
+    def test_json_response(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard_ajax/')
+        self.assertEqual(response['Content-Type'], 'application/json')
+        self.assertEqual(response.json(), [{'id': 1, 'title': 'title', 'url': 'hi',
+                                            'iv': '', 'salt': '', 'iteration': 15, 'created_at': '2012-05-12T00:00:00Z'}])
