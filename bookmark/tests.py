@@ -77,6 +77,7 @@ class DashboardViewTest(TestCase):
 
 class DashboardAJaxViewTest(TestCase):
 
+    @freeze_time('05/12/2012')
     def setUp(self):
         self.c = Client()
         self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
@@ -86,10 +87,22 @@ class DashboardAJaxViewTest(TestCase):
         found = resolve('/dashboard_ajax/')
         self.assertEqual(found.func, views.dashboard_ajax)
 
-    @freeze_time('05/12/2012')
     def test_json_response(self):
         self.c.login(username='hiren', password='bunny')
         response = self.c.get('/dashboard_ajax/')
         self.assertEqual(response['Content-Type'], 'application/json')
         self.assertEqual(response.json(), [{'id': 1, 'title': 'title', 'url': 'hi',
                                             'iv': '', 'salt': '', 'iteration': 15, 'created_at': '2012-05-12T00:00:00Z'}])
+
+
+class FormViewTest(TestCase):
+
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.c.login(username='hiren', password='bunny')
+
+    def test_form_creation(self):
+        response = self.c.post('/form/', {'title': 'title', 'url': 'xyz', 'iteration': 5,
+                                          'iv': 'xyz', 'salt': 'lobon :D', 'tags': ['x', 'y']})
+        self.assertEqual(Bookmark.objects.count(), 1)
