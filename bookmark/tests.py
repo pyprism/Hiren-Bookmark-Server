@@ -103,6 +103,39 @@ class FormViewTest(TestCase):
         self.c.login(username='hiren', password='bunny')
 
     def test_form_creation(self):
-        response = self.c.post('/form/', {'title': 'title', 'url': 'xyz', 'iteration': 5,
+        self.c.post('/form/', {'title': 'title', 'url': 'xyz', 'iteration': 5,
                                           'iv': 'xyz', 'salt': 'lobon :D', 'tags': ['x', 'y']})
         self.assertEqual(Bookmark.objects.count(), 1)
+
+
+class TagsViewTest(TestCase):
+
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.c.login(username='hiren', password='bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+        obj.tags.add("hiren")
+
+    def test_returns_all_tags(self):
+        response = self.c.get('/tags_ajax/')
+        self.assertEqual(response.json(), ['hiren'])
+
+
+class TagCloudViewTest(TestCase):
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.c.login(username='hiren', password='bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+        obj.tags.add("hiren")
+
+    def test_returns_correct_template(self):
+        response = self.c.get('/tags/')
+        self.assertTemplateUsed(response, 'tag_cloud.html')
+
+    def test_json_response(self):
+        response = self.c.get('/tags/', CONTENT_TYPE='application/json')
+        self.assertEqual(response.json(), [{'text': 'hiren', 'weight': 1, 'link': '/tags/hiren/'}])
