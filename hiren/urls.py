@@ -16,9 +16,11 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.conf import settings
 from bookmark import urls as web
+from api import urls as api
 
 urlpatterns = [
     url(r'^', include(web)),
+    url(r'^api/', include(api)),
 ]
 
 if settings.DEBUG:
