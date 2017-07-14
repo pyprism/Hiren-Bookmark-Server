@@ -197,7 +197,7 @@ def bookmark_readonly(request, pk=None):
 @login_required
 def bookmark_edit(request, pk=None):
     """
-    view for edit form ajax
+    view for ajax edit form
     :param request:
     :param pk:
     :return:
@@ -215,6 +215,12 @@ def bookmark_edit(request, pk=None):
 
 @login_required
 def delete(request, pk=None):
+    """
+    Delete bookmark
+    :param request:
+    :param pk:
+    :return:
+    """
     bookmark = get_object_or_404(Bookmark, pk=pk)
     bookmark.delete()
     messages.info(request, "Bookmark deleted")
