@@ -1,9 +1,11 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from bookmark import views
 from django.contrib.auth import views as auth
+from api import urls as api
 
 urlpatterns = [
     url(r'^$', views.login, name='login'),
+    url(r'^api/', include(api)),
     url(r'^secret/$', views.secret, name='secret'),
     url(r'^logout/$', auth.logout, {'next_page': '/'}, name="logout"),
     url(r'^dashboard/(?P<pk>[^\.]+)/edit/$', views.bookmark_edit),
