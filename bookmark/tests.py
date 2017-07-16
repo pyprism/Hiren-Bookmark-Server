@@ -11,7 +11,6 @@ class LoginViewTest(TestCase):
     """
     Test for login view
     """
-    # reset_sequences = True
 
     def setUp(self):
         self.c = Client()
@@ -104,7 +103,7 @@ class FormViewTest(TestCase):
 
     def test_form_creation(self):
         self.c.post('/form/', {'title': 'title', 'url': 'xyz', 'iteration': 5,
-                                          'iv': 'xyz', 'salt': 'lobon :D', 'tags': ['x', 'y']})
+                               'iv': 'xyz', 'salt': 'lobon :D', 'tags': ['x', 'y']})
         self.assertEqual(Bookmark.objects.count(), 1)
 
 
@@ -123,7 +122,10 @@ class TagsViewTest(TestCase):
         self.assertEqual(response.json(), ['hiren'])
 
 
-class TagCloudViewTest(TestCase):
+class TagCloudViewTest(TransactionTestCase):
+
+    reset_sequences = True
+
     def setUp(self):
         self.c = Client()
         self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
@@ -139,3 +141,52 @@ class TagCloudViewTest(TestCase):
     def test_json_response(self):
         response = self.c.get('/tags/', CONTENT_TYPE='application/json')
         self.assertEqual(response.json(), [{'text': 'hiren', 'weight': 1, 'link': '/tags/hiren/'}])
+
+
+class BookmarkByTagViewTest(TransactionTestCase):
+
+    reset_sequences = True
+
+    @freeze_time('05/12/2012')
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+        obj.tags.add("hiren")
+
+    def test_returns_correct_template(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/tags/hiren/')
+        self.assertTemplateUsed(response, 'tag.html')
+
+    def test_json_response(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/tags/hiren/', CONTENT_TYPE='application/json')
+        self.assertEqual(response.json(), [{'id': 1, 'title': 'xyz', 'url': '', 'iv': '', 'salt': '',
+                                            'iteration': 4, 'created_at': '2012-05-12T00:00:00Z'}])
+
+
+class BookmarkReadonlyViewTest(TransactionTestCase):
+    reset_sequences = True
+
+    @freeze_time('05/12/2012')
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+        obj.tags.add("hiren")
+
+    def test_returns_correct_template(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard/1/')
+        self.assertTemplateUsed(response, 'bookmark_readonly.html')
+
+    def test_json_response(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard/1/', CONTENT_TYPE='application/json')
+        self.assertEqual(response.json(), {'id': 1, 'title': 'xyz', 'url': '', 'iv': '', 'salt': '', 'iteration': 4,
+                                           'created_at': '2012-05-12T00:00:00Z'})
+
+
