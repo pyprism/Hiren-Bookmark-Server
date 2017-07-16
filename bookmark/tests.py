@@ -190,3 +190,25 @@ class BookmarkReadonlyViewTest(TransactionTestCase):
                                            'created_at': '2012-05-12T00:00:00Z'})
 
 
+class BookmarkEditViewTest(TransactionTestCase):
+
+    reset_sequences = True
+
+    @freeze_time('05/12/2012')
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+        obj.tags.add("hiren")
+
+    def test_returns_correct_template(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard/1/edit/')
+        self.assertTemplateUsed(response, 'bookmark_edit.html')
+
+    # def test_form_edit(self):
+    #     response = self.c.post('/dashboard/1/edit/', {'title': 'update', 'iteration': 4})
+    #     print(response.json())
+
+
