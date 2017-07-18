@@ -207,8 +207,23 @@ class BookmarkEditViewTest(TransactionTestCase):
         response = self.c.get('/dashboard/1/edit/')
         self.assertTemplateUsed(response, 'bookmark_edit.html')
 
-    # def test_form_edit(self):
-    #     response = self.c.post('/dashboard/1/edit/', {'title': 'update', 'iteration': 4})
-    #     print(response.json())
+
+class DeleteViewTest(TransactionTestCase):
+
+    reset_sequences = True
+
+    def setUp(self):
+        self.c = Client()
+        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        obj = Bookmark(title='xyz', iteration=4)
+        obj.save()
+
+    def test_redirect_obj_delete(self):
+        self.c.login(username='hiren', password='bunny')
+        response = self.c.get('/dashboard/1/delete/')
+        self.assertEqual(Bookmark.objects.count(), 0)
+
+        self.assertRedirects(response, '/dashboard/')
+
 
 
