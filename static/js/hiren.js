@@ -56,10 +56,11 @@ function check(url) {  // check for existing url or create the document
         index: {
             fields: ["url"]
         }
-    }).then(function (result) {
+    }).then(function () {
         db.find({
             selector: {url: url},
         }).then(function (result) {
+            console.log(result.docs.length);
             if(result.docs.length) {
                 return false;
             } else {
@@ -106,7 +107,7 @@ function create() { // function url input form
 
     // key, salt generation
     const url = $("#url").val();
-    if(!check(url)) {
+    if(check(url)) {
         sweetAlert("Error", "URL already exists", "error");
         return;
     }
@@ -156,6 +157,27 @@ function create() { // function url input form
     })
 }
 
+function checkOrGet(id) {
+    const db = new PouchDB('hiren');
+    db.createIndex({
+        index: {
+            fields: ["url"]
+        }
+    }).then(function () {
+        db.find({
+            selector: {_id: id},
+        }).then(function (result) {
+            if (result.docs.length)
+                return true;
+            return false;
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
+
 function table(){  // function for table rendering in dashboard view
     $.ajax({
         url: '/dashboard_ajax/'
@@ -167,7 +189,7 @@ function table(){  // function for table rendering in dashboard view
             let key = forge.pkcs5.pbkdf2(sessionStorage.getItem('secret'),
                 salt, hiren.iteration, 32);
             let url = decrypt(hiren.url, key, hiren.iv);
-            check(url);
+            // check(url);
             bunny['id'] = "<a href=" + "'/dashboard/"+ hiren.id + "/' >" + hiren.id + "</a>";
             bunny['title'] = "<a href="+ "'" + url + "'" + " target='_blank' >"
                 + decrypt(hiren.title, key, hiren.iv) + "</a>";
