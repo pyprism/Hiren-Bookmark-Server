@@ -13,18 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf.urls import url, include
+from django.urls import path, include, re_path
 from django.conf import settings
 from bookmark import urls as web
 from api import urls as api
 
 urlpatterns = [
-    url(r'^', include(web)),
-    url(r'^api/', include(api)),
+    path(r'', include(web)),
+    path('api/', include(api)),
 ]
 
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
+        re_path(r'^__debug__/', include(debug_toolbar.urls)),
 ]
