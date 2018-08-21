@@ -307,3 +307,6 @@ REST_FRAMEWORK = {
 
 # CORS
 CORS_ORIGIN_ALLOW_ALL = True
+
+# custom user model
+AUTH_USER_MODEL = 'base.Account'
