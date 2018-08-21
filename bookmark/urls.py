@@ -1,18 +1,18 @@
-from django.conf.urls import url
+from django.urls import path
 from bookmark import views
 
 urlpatterns = [
-    url(r'^$', views.login, name='login'),
-    url(r'^secret/$', views.secret, name='secret'),
-    url(r'^logout/$', views.logout, name="logout"),
-    url(r'^dashboard/(?P<pk>[^\.]+)/edit/$', views.bookmark_edit),
-    url(r'^dashboard/(?P<pk>[^\.]+)/delete/$', views.delete),
-    url(r'^dashboard/(?P<pk>[^\.]+)/$', views.bookmark_readonly),
-    url(r'^dashboard/$', views.dashboard, name='dashboard'),
-    url(r'^dashboard_ajax/$', views.dashboard_ajax),
-    url(r'^form/$', views.form, name='form'),
-    url(r'^title/$', views.title),
-    url(r'^tags_ajax/$', views.tags),
-    url(r'^tags/(?P<name>\w+)/$', views.bookmark_by_tag),
-    url(r'^tags/$', views.tag_cloud, name='tags')
+    path('', views.login, name='login'),
+    path('secret/', views.secret, name='secret'),
+    path('logout/', views.logout, name="logout"),
+    path('dashboard/<int:pk>/edit/', views.bookmark_edit),
+    path('dashboard/<int:pk>/delete/', views.delete),
+    path('dashboard/<int:pk>/', views.bookmark_readonly),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard_ajax/', views.dashboard_ajax),
+    path('form/', views.form, name='form'),
+    path('title/', views.title),
+    path('tags_ajax/', views.tags),
+    path('tags/<str:name>/', views.bookmark_by_tag),
+    path('tags/', views.tag_cloud, name='tags')
 ]
