@@ -1,11 +1,10 @@
 from django.conf.urls import url
 from bookmark import views
-from django.contrib.auth import views as auth
 
 urlpatterns = [
     url(r'^$', views.login, name='login'),
     url(r'^secret/$', views.secret, name='secret'),
-    url(r'^logout/$', auth.logout, {'next_page': '/'}, name="logout"),
+    url(r'^logout/$', views.logout, name="logout"),
     url(r'^dashboard/(?P<pk>[^\.]+)/edit/$', views.bookmark_edit),
     url(r'^dashboard/(?P<pk>[^\.]+)/delete/$', views.delete),
     url(r'^dashboard/(?P<pk>[^\.]+)/$', views.bookmark_readonly),
