@@ -1,10 +1,10 @@
 from django.urls import resolve
 from django.test import TestCase, TransactionTestCase
-from django.contrib.auth.models import User
 from django.test import Client
 from .models import Bookmark
 from . import views
 from freezegun import freeze_time
+from base.models import Account
 
 
 class LoginViewTest(TestCase):
@@ -14,7 +14,7 @@ class LoginViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
 
     def test_login_url_resolves_to_login_view(self):
         found = resolve('/')
@@ -46,7 +46,7 @@ class SecretViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
 
     def test_secret_view_returns_correct_template(self):
         self.c.login(username='hiren', password='bunny')
@@ -62,7 +62,7 @@ class DashboardViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
 
     def test_secret_view_returns_correct_template(self):
         self.c.login(username='hiren', password='bunny')
@@ -79,7 +79,7 @@ class DashboardAJaxViewTest(TestCase):
     @freeze_time('05/12/2012')
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         Bookmark.objects.create(title="title", url="hi", iteration=15)
 
     def test_url_resolves_to_correct_view(self):
@@ -98,7 +98,7 @@ class FormViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         self.c.login(username='hiren', password='bunny')
 
     def test_form_creation(self):
@@ -111,7 +111,7 @@ class TagsViewTest(TestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         self.c.login(username='hiren', password='bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
@@ -128,7 +128,7 @@ class TagCloudViewTest(TransactionTestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         self.c.login(username='hiren', password='bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
@@ -150,7 +150,7 @@ class BookmarkByTagViewTest(TransactionTestCase):
     @freeze_time('05/12/2012')
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
         obj.tags.add("hiren")
@@ -173,7 +173,7 @@ class BookmarkReadonlyViewTest(TransactionTestCase):
     @freeze_time('05/12/2012')
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user(username='hiren', password='bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
         obj.tags.add("hiren")
@@ -197,7 +197,7 @@ class BookmarkEditViewTest(TransactionTestCase):
     @freeze_time('05/12/2012')
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user('hiren', 'bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
         obj.tags.add("hiren")
@@ -214,7 +214,7 @@ class DeleteViewTest(TransactionTestCase):
 
     def setUp(self):
         self.c = Client()
-        self.user = User.objects.create_user('hiren', 'a@b.com', 'bunny')
+        self.user = Account.objects.create_user('hiren', 'bunny')
         obj = Bookmark(title='xyz', iteration=4)
         obj.save()
 
