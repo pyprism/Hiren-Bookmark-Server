@@ -10,6 +10,7 @@ from .utils import Title
 from django.views.decorators.csrf import csrf_exempt
 from taggit.models import Tag
 from django.shortcuts import get_object_or_404
+from django.contrib.auth import logout as fuckoff
 
 
 def login(request):
@@ -225,3 +226,14 @@ def delete(request, pk=None):
     bookmark.delete()
     messages.info(request, "Bookmark deleted")
     return redirect('dashboard')
+
+
+def logout(request):
+    """
+    fuck off and logout
+    :param request:
+    :return:
+    """
+    fuckoff(request)
+    return redirect("login")
+
