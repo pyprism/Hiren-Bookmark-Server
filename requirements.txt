@@ -12,7 +12,7 @@ freezegun==0.3.10
 funcy==1.10.3
 packaging==17.1
 psycopg2==2.7.5
-pyparsing==2.2.0
+pyparsing==2.2.1
 python-dateutil==2.7.3
 pytz==2018.5
 raven==6.9.0
