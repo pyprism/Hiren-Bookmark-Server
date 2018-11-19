@@ -10,7 +10,7 @@ django-taggit==0.23.0
 djangorestframework==3.9.0
 freezegun==0.3.11
 funcy==1.10.3
-packaging==17.1
+packaging==18.0
 pyparsing==2.3.0
 psycopg2==2.7.6.1
 python-dateutil==2.7.5
