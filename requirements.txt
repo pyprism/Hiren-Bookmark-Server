@@ -21,4 +21,4 @@ redis==3.0.1
 rjsmin==1.0.12
 six==1.12.0
 sqlparse==0.2.4
-uWSGI==2.0.17.1
+uWSGI==2.0.18
